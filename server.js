@@ -15,13 +15,13 @@ if (env === 'dev') {  app.locals.pretty = true; }
 app.use(express.static(__dirname+'/views'));
 app.use(express.static(__dirname+'/public'));
 
-app.get('/', function (req, res) {
+var main = function(req, res){
   res.render('main', { env: env });
-});
+}
 
-app.get('/partials/:name', function (req, res) {
-    var name = req.params.name;
-    res.render(name);
-});
+app.get('/', main);
+app.get('/front', main);
+app.get('/back', main);
+
 
 module.exports = app;

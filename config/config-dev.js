@@ -4,7 +4,7 @@
 config = module.exports = {};
 
 config.aws = {
-  AWS_ACCESS_KEY:'0QH2FBS5QMYVW5xxxxxx',
-  AWS_SECRET_KEY:'iIeeIGmgLBkiKGAZb8YxiL526zgCRXPOhYxxxxxx',
+  AWS_ACCESS_KEY:'0QH2xxxxxxxxxxxxxxxx',
+  AWS_SECRET_KEY:'iIeexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
   S3_BUCKET: 'bucketname'
 };
