@@ -3,7 +3,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 
 var b = browserify({
-  entries: ['./src/babeljs/main.es6'],
+  entries: ['./src/babeljs/main.jsx'],
   cache: {},
   packageCache: {},
   plugin: [watchify],

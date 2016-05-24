@@ -1,3 +1,5 @@
+const ReactDom = require('react-dom');
+
 module.exports = Backbone.Router.extend({
 
     routes: {
@@ -15,12 +17,15 @@ module.exports = Backbone.Router.extend({
       console.log(name);
       callback && callback.apply(this, args);
     },
+
     root: function(){
-      console.log('rooted')
+      $('#root').html('root')
     },
+
     front: function(){
       $('#root').html('front')
     },
+
     back: function(){
       $('#root').html('back')
     },

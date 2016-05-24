@@ -1,4 +1,3 @@
-
 config = module.exports = {};
 
 config.aws = {
