@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "backbone": "^1.3.3",
+    "browserify-global-shim": "^1.0.3",
     "express": "^4.13.3",
     "grunt": "~1.0.1",
     "grunt-browserify": "^3.8.0",

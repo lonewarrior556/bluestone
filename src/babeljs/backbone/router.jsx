@@ -1,4 +1,5 @@
-const ReactDom = require('react-dom');
+//pages
+const FrontPage = require('../pages/front-page.jsx');
 
 module.exports = Backbone.Router.extend({
 
@@ -10,7 +11,6 @@ module.exports = Backbone.Router.extend({
 
     initialize: function(options){
       this.$root = document.getElementById(options.rootId);
-      this.session = options.session;
     },
 
     execute: function(callback, args, name) {
@@ -23,7 +23,7 @@ module.exports = Backbone.Router.extend({
     },
 
     front: function(){
-      $('#root').html('front')
+      ReactDom.render( <FrontPage/>, this.$root );
     },
 
     back: function(){

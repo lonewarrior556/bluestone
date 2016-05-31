@@ -1,17 +1,27 @@
 var fs = require('fs');
 var browserify = require('browserify');
 var watchify = require('watchify');
+var globalShim = require('browserify-global-shim');
 
 var b = browserify({
   entries: ['./src/babeljs/main.jsx'],
   cache: {},
   packageCache: {},
   plugin: [watchify],
+  insertGlobalVars: {
+    '$'        : function(){ return 'require("jquery")';},
+    'Backbone' : function(){ return 'require("backbone")';},
+    'ReactDom' : function(){ return 'require("react-dom")';},
+    'React'    : function(){ return 'require("react")';},
+    '_'        : function(){ return 'require("underscore")';}
+  }
 });
+
+b.transform("babelify", {presets: ["es2015", "react"]});
 
 b.on('update', bundle);
 b.on('log',   function(msg) { console.log(msg);});
-b.transform("babelify", {presets: ["es2015", "react"]});
+
 bundle(['babel/all']);
 
 function bundle(ids) {

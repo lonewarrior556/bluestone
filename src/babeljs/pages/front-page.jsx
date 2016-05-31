@@ -1,5 +1,4 @@
 
-
 module.exports = React.createClass({
   // propTypes: {
   //   email:      React.PropTypes.string,

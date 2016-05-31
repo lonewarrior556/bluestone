@@ -1,5 +1,4 @@
-const nav = require('../backbone/nav-function.js');
-const React = require('react');
+const nav = require('../functions/nav-function.js');
 
 var NavMenu = React.createClass({
 
