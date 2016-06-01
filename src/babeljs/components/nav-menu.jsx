@@ -1,6 +1,5 @@
 const nav = require('../functions/nav-function.js');
 
-
 var map = { 'about'    : 'ABOUT US',
             'services' : 'OUR SERVICES',
             'newsroom' : 'NEWSROOM',
@@ -9,10 +8,11 @@ var map = { 'about'    : 'ABOUT US',
 
 var NavMenu = React.createClass({
   getInitialState: function() {
-    return {page : null}
+    return {page : window.location.pathname.slice(1), dim:1}
   },
   changeRoute: function(){
-    this.setState({page: this.props.emitter.route});
+    this.setState({dim:.1})
+    setTimeout(this.setState.bind(this,{page: this.props.emitter.route, dim:1}),500)
   },
   componentDidMount: function(){
     this.props.emitter.on('route', this.changeRoute);
@@ -21,7 +21,6 @@ var NavMenu = React.createClass({
     this.props.emitter.removeListener('route', this.changeRoute);
   },
   render: function() {
-    console.log(this.state.page)
     var height = 290;
     var imageHeight = 250;
     var leftImage  ={ url: '/img/fk-home-logo.png', width: 276}
@@ -39,7 +38,7 @@ var NavMenu = React.createClass({
       <section id="grad">
         <style>
           {`
-            .${this.state.page}{ color: #188dcd;;}
+            .${this.state.page}{ color: #188dcd;}
             #grad {
               font-family: 'Droid Serif', serif;
               font-size: 15px;
@@ -90,7 +89,11 @@ var NavMenu = React.createClass({
               height: ${imageHeight}px;
               background-repeat: no-repeat;
             }
-            #main-img-bar{ position:relative; }
+            #main-img-bar{
+              position:relative;
+              opacity: ${this.state.dim};
+              transition: opacity .5s;
+            }
             .home-image{ opacity: ${opacity[0]} }
             .inside-image{ opacity: ${opacity[1]} }
             .inside-text{
