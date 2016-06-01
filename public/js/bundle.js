@@ -33329,7 +33329,7 @@ var NavMenu = React.createClass({
   displayName: 'NavMenu',
 
   getInitialState: function getInitialState() {
-    return { page: window.location.pathname.slice(1), dim: 1 };
+    return { page: window.location.pathname.slice(1) || 'home', dim: 1 };
   },
   changeRoute: function changeRoute() {
     this.setState({ dim: .1 });

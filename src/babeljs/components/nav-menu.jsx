@@ -8,7 +8,7 @@ var map = { 'about'    : 'ABOUT US',
 
 var NavMenu = React.createClass({
   getInitialState: function() {
-    return {page : window.location.pathname.slice(1), dim:1}
+    return {page : (window.location.pathname.slice(1)||'home'), dim:1}
   },
   changeRoute: function(){
     this.setState({dim:.1})
