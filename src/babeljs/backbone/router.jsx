@@ -1,34 +1,46 @@
+const EventEmitter = require('events');
 //pages
 const FrontPage = require('../pages/front-page.jsx');
+//components
+const NavMenu = require('../components/nav-menu.jsx');
+
 
 module.exports = Backbone.Router.extend({
 
     routes: {
-                        '' : 'root',
-                    'front': 'front',
-                     'back': 'back',
+                ''         : 'home',
+                about      : 'about',
+                services   : 'services',
+                newsroom   : 'newsroom',
+                careers    : 'careers',
+                contact    : 'contact'
     },
 
     initialize: function(options){
       this.$root = document.getElementById(options.rootId);
+      this.emitter = new EventEmitter();
+      this.nav = ReactDom.render( <NavMenu emitter={this.emitter}/>, document.getElementById('header'));
     },
 
     execute: function(callback, args, name) {
-      console.log(name);
+      this.emitter.route = name;
+      this.emitter.emit('route');
       callback && callback.apply(this, args);
     },
 
-    root: function(){
-      $('#root').html('root')
+    home: function(){
     },
-
-    front: function(){
-      ReactDom.render( <FrontPage/>, this.$root );
+    about: function(){
+      // ReactDom.render( <FrontPge/>, this.$root );
     },
-
-    back: function(){
-      $('#root').html('back')
+    services: function(){
     },
+    newsroom: function(){
+    },
+    careers: function(){
+    },
+    contact: function(){
 
+    },
 
   })

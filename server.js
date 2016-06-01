@@ -20,8 +20,10 @@ var main = function(req, res){
 }
 
 app.get('/', main);
-app.get('/front', main);
-app.get('/back', main);
-
+app.get('/about', main);
+app.get('/services', main);
+app.get('/newsroom', main);
+app.get('/careers', main);
+app.get('/contact', main);
 
 module.exports = app;

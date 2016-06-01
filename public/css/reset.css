@@ -1,0 +1,48 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+h1, h2, li, ul, section, a, div, body{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+  color: inherit;
+  font-style: inherit;
+	display: block;
+}
+/* HTML5 display-role reset for older browsers */
+section {
+	display: block;
+}
+ol, ul {
+	list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.clear:after{
+  content:'';
+  display: block;
+  clear: both;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.absolute{
+	position: absolute;
+	left:0;
+	top:0;
+}
+.filled{
+	width: 100%;
+}
+.opacity-transition{
+	transition: opacity 1s;
+}
