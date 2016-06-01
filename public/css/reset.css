@@ -44,5 +44,8 @@ body {
 	width: 100%;
 }
 .opacity-transition{
-	transition: opacity 1s;
+	transition: opacity .5s;
+}
+.opacity-transition-delay{
+	transition: opacity .5s .5s;
 }
