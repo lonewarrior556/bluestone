@@ -33346,12 +33346,12 @@ var NavMenu = React.createClass({
     var imageHeight = 250;
     var leftImage = { url: '/img/fk-home-logo.png', width: 276 };
     var rightImage = { url: '/img/main-slider_trust.png', width: 587 };
+    var insideImage = { url: '/img/inside-banner.png', width: 872 };
     var opacity = [1, 0];
     var bannerText = map[this.state.page];
     if (this.state.page !== 'home') {
       height = 174;
       imageHeight = 136;
-      leftImage = { url: '/img/inside-banner.png', width: 872 };
       opacity = [0, 1];
     }
 
@@ -33361,7 +33361,7 @@ var NavMenu = React.createClass({
       React.createElement(
         'style',
         null,
-        '\n            .' + this.state.page + '{ color: #188dcd;;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size: 15px;\n              background: #000e15;\n              background: -webkit-linear-gradient(#000e15, #0b435e);\n              background: -o-linear-gradient(#000e15, #0b435e);\n              background: -moz-linear-gradient(#000e15, #0b435e);\n              background: linear-gradient(#000e15, #0b435e);\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              width: 872px;\n              margin: 0 auto;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              color:white;\n              margin-bottom: 12px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n              letter-spacing: 1px;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              background-image: url(' + rightImage.url + ');\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            #main-img-bar{ position:relative; }\n            .home-image{ opacity: ' + opacity[0] + ' }\n            .inside-image{ opacity: ' + opacity[1] + ' }\n            .inside-text{\n              float: right;\n              font-style: italic;\n              color: #fff;\n              font-size: 26px;\n              text-align: left;\n              width: 253px;\n              height: 80px;\n              padding-top: 70px;\n              letter-spacing: 1px;\n            }\n          '
+        '\n            .' + this.state.page + '{ color: #188dcd;;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size: 15px;\n              background: #000e15;\n              background: -webkit-linear-gradient(#000e15, #0b435e);\n              background: -o-linear-gradient(#000e15, #0b435e);\n              background: -moz-linear-gradient(#000e15, #0b435e);\n              background: linear-gradient(#000e15, #0b435e);\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              width: 872px;\n              margin: 0 auto;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              color:white;\n              margin-bottom: 12px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n              letter-spacing: 1px;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              background-image: url(' + rightImage.url + ');\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .both-img{\n              background-image: url(' + insideImage.url + ');\n              width: ' + insideImage.width + 'px;\n              float: left;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            #main-img-bar{ position:relative; }\n            .home-image{ opacity: ' + opacity[0] + ' }\n            .inside-image{ opacity: ' + opacity[1] + ' }\n            .inside-text{\n              float: right;\n              font-style: italic;\n              color: #fff;\n              font-size: 26px;\n              text-align: left;\n              width: 253px;\n              height: 80px;\n              padding-top: 70px;\n              letter-spacing: 1px;\n            }\n          '
       ),
       React.createElement(
         'div',
@@ -33444,7 +33444,7 @@ var NavMenu = React.createClass({
             { className: 'absolute filled inside-image opacity-transition' },
             React.createElement(
               'div',
-              { className: 'left-img imag' },
+              { className: 'both-img imag' },
               React.createElement(
                 'div',
                 { className: 'inside-text' },

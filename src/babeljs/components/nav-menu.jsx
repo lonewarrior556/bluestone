@@ -26,12 +26,12 @@ var NavMenu = React.createClass({
     var imageHeight = 250;
     var leftImage  ={ url: '/img/fk-home-logo.png', width: 276}
     var rightImage ={ url: '/img/main-slider_trust.png', width: 587 }
+    var insideImage    ={ url: '/img/inside-banner.png', width: 872 }
     var opacity = [1,0]
     var bannerText = map[this.state.page];
     if( this.state.page !== 'home'){
       height = 174;
       imageHeight = 136
-      leftImage = { url: '/img/inside-banner.png', width: 872 }
       opacity = [0,1]
     }
 
@@ -81,6 +81,11 @@ var NavMenu = React.createClass({
               width: ${rightImage.width}px;
               float: right;
             }
+            .both-img{
+              background-image: url(${insideImage.url});
+              width: ${insideImage.width}px;
+              float: left;
+            }
             .imag{
               height: ${imageHeight}px;
               background-repeat: no-repeat;
@@ -117,7 +122,7 @@ var NavMenu = React.createClass({
                 <div className="right-img imag"></div>
               </div>
               <div className="absolute filled inside-image opacity-transition">
-                <div className="left-img imag"><div className="inside-text">{bannerText}</div></div>
+                <div className="both-img imag"><div className="inside-text">{bannerText}</div></div>
               </div>
           </div>
         </div>
