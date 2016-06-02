@@ -128,7 +128,7 @@ var NavMenu = React.createClass({
                 <div className="left-img imag"></div>
                 <div className="right-img imag"></div>
               </div>
-              <div className="absolute filled inside-image opacity-transition-delay">
+              <div className="absolute filled inside-image opacity-transition">
                 <div className="both-img imag"><div className="inside-text">{bannerText}</div></div>
               </div>
           </div>

@@ -33445,7 +33445,7 @@ var NavMenu = React.createClass({
           ),
           React.createElement(
             'div',
-            { className: 'absolute filled inside-image opacity-transition-delay' },
+            { className: 'absolute filled inside-image opacity-transition' },
             React.createElement(
               'div',
               { className: 'both-img imag' },
