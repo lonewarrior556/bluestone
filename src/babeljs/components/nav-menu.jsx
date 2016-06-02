@@ -11,8 +11,12 @@ var NavMenu = React.createClass({
     return {page : (window.location.pathname.slice(1)||'home'), dim:1}
   },
   changeRoute: function(){
-    this.setState({dim:.1})
-    setTimeout(this.setState.bind(this,{page: this.props.emitter.route, dim:1}),500)
+    if( this.porps.emmitter.route == home ){
+      this.setState({page: this.props.emitter.route, dim:1})
+    }else{
+      this.setState({dim:.1})
+      setTimeout(this.setState.bind(this,{page: this.props.emitter.route, dim:1}),500)
+    }
   },
   componentDidMount: function(){
     this.props.emitter.on('route', this.changeRoute);
