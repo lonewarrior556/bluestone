@@ -33332,7 +33332,7 @@ var NavMenu = React.createClass({
     return { page: window.location.pathname.slice(1) || 'home', dim: 1 };
   },
   changeRoute: function changeRoute() {
-    if (this.props.emmitter.route === "home") {
+    if (this.props.emitter.route === "home") {
       this.setState({ page: this.props.emitter.route, dim: 1 });
     } else {
       this.setState({ dim: .1 });
