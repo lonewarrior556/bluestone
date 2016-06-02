@@ -33294,7 +33294,6 @@ module.exports = Backbone.Router.extend({
     this.emitter = new EventEmitter();
     this.nav = ReactDom.render(React.createElement(NavMenu, { emitter: this.emitter }), document.getElementById('header'));
   },
-
   execute: function execute(callback, args, name) {
     this.emitter.route = name;
     this.emitter.emit('route');
@@ -33313,17 +33312,68 @@ module.exports = Backbone.Router.extend({
 });
 
 }).call(this,require("backbone"),require("react-dom"),require("react"))
-},{"../components/nav-menu.jsx":174,"../pages/front-page.jsx":177,"backbone":1,"events":2,"react":170,"react-dom":32}],174:[function(require,module,exports){
+},{"../components/nav-menu.jsx":175,"../pages/front-page.jsx":178,"backbone":1,"events":2,"react":170,"react-dom":32}],174:[function(require,module,exports){
+(function (React){
+"use strict";
+
+var ImgSlider = React.createClass({
+  displayName: "ImgSlider",
+
+
+  propTypes: {
+    classString: React.PropTypes.string,
+    urls: React.PropTypes.array,
+    duration: React.PropTypes.number
+  },
+  getDefaultProps: function getDefaultProps() {
+    return { duration: 10000 };
+  },
+  getInitialState: function getInitialState() {
+    return { order: 0, opacity: 0, itemName: "a" + Math.random().toString(36).substr(2, 6) };
+  },
+  changeImage: function changeImage() {
+    this.setState({ opacity: 0 });
+    setTimeout(this.setState.bind(this, { order: (this.state.order + 1) % this.props.urls.length, opacity: 1 }), 1000);
+  },
+  componentDidMount: function componentDidMount() {
+    this.setState({ opacity: 1, interval: setInterval(this.changeImage, this.props.duration) });
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearInterval(this.state.interval);
+  },
+  render: function render() {
+    var allClasses = this.props.classString + " " + this.state.itemName;
+
+    return React.createElement(
+      "div",
+      { className: allClasses },
+      React.createElement(
+        "style",
+        null,
+        "\n                  ." + this.state.itemName + "{\n                    background-image: url(" + this.props.urls[this.state.order] + ");\n                    opacity: " + this.state.opacity + ";\n                    transition: opacity 1.5s ease;\n                  }\n                "
+      )
+    );
+  }
+
+});
+
+module.exports = ImgSlider;
+
+}).call(this,require("react"))
+},{"react":170}],175:[function(require,module,exports){
 (function (React){
 'use strict';
 
 var nav = require('../functions/nav-function.js');
+var ImgSlider = require('./image-slider.jsx');
 
 var map = { 'about': 'ABOUT US',
   'services': 'OUR SERVICES',
   'newsroom': 'NEWSROOM',
   'careers': 'CAREER CENTER',
   'contact': 'CONTACT US' };
+
+var mainImgUrls = ['/img/main-slider_trust.png', '/img/main-slider_service.png', '/img/main-slider_best-sfr3.png'];
 
 var NavMenu = React.createClass({
   displayName: 'NavMenu',
@@ -33332,12 +33382,8 @@ var NavMenu = React.createClass({
     return { page: window.location.pathname.slice(1) || 'home', dim: 1 };
   },
   changeRoute: function changeRoute() {
-    if (this.props.emitter.route === "home") {
-      this.setState({ page: this.props.emitter.route, dim: 1 });
-    } else {
-      this.setState({ dim: .1 });
-      setTimeout(this.setState.bind(this, { page: this.props.emitter.route, dim: 1 }), 500);
-    }
+    this.setState({ dim: .1 });
+    setTimeout(this.setState.bind(this, { page: this.props.emitter.route, dim: 1 }), 500);
   },
   componentDidMount: function componentDidMount() {
     this.props.emitter.on('route', this.changeRoute);
@@ -33346,17 +33392,38 @@ var NavMenu = React.createClass({
     this.props.emitter.removeListener('route', this.changeRoute);
   },
   render: function render() {
+    var imagePanel = React.createElement(
+      'div',
+      { className: 'absolute filled' },
+      React.createElement('div', { className: 'left-img imag' }),
+      React.createElement(ImgSlider, { classString: 'right-img imag', urls: mainImgUrls })
+    );
+
     var height = 290;
     var imageHeight = 250;
+
     var leftImage = { url: '/img/fk-home-logo.png', width: 276 };
-    var rightImage = { url: '/img/main-slider_trust.png', width: 587 };
-    var insideImage = { url: '/img/inside-banner.png', width: 872 };
-    var opacity = [1, 0];
-    var bannerText = map[this.state.page];
+    var rightImage = { width: 587 };
+
     if (this.state.page !== 'home') {
+
+      imagePanel = React.createElement(
+        'div',
+        { className: 'absolute filled' },
+        React.createElement(
+          'div',
+          { className: 'left-img imag' },
+          React.createElement(
+            'div',
+            { className: 'inside-text' },
+            map[this.state.page]
+          )
+        )
+      );
+
+      leftImage = { url: '/img/inside-banner.png', width: 872 };
       height = 174;
       imageHeight = 136;
-      opacity = [0, 1];
     }
 
     return React.createElement(
@@ -33365,7 +33432,7 @@ var NavMenu = React.createClass({
       React.createElement(
         'style',
         null,
-        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size: 15px;\n              background: #000e15;\n              background: -webkit-linear-gradient(#000e15, #0b435e);\n              background: -o-linear-gradient(#000e15, #0b435e);\n              background: -moz-linear-gradient(#000e15, #0b435e);\n              background: linear-gradient(#000e15, #0b435e);\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              width: 872px;\n              margin: 0 auto;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              color:white;\n              margin-bottom: 12px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n              letter-spacing: 1px;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              background-image: url(' + rightImage.url + ');\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .both-img{\n              background-image: url(' + insideImage.url + ');\n              width: ' + insideImage.width + 'px;\n              float: left;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            #main-img-bar{\n              position:relative;\n              opacity: ' + this.state.dim + ';\n              transition: opacity .5s;\n            }\n            .home-image{ opacity: ' + opacity[0] + ' }\n            .inside-image{ opacity: ' + opacity[1] + ' }\n            .inside-text{\n              float: right;\n              font-style: italic;\n              color: #fff;\n              font-size: 26px;\n              text-align: left;\n              width: 253px;\n              height: 80px;\n              padding-top: 70px;\n              letter-spacing: 1px;\n            }\n          '
+        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              background: #000e15;\n              background: -webkit-linear-gradient(#000e15, #0b435e);\n              background: -o-linear-gradient(#000e15, #0b435e);\n              background: -moz-linear-gradient(#000e15, #0b435e);\n              background: linear-gradient(#000e15, #0b435e);\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              width: 872px;\n              margin: 0 auto;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              margin-bottom: 12px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            #main-img-bar{\n              position:relative;\n              opacity: ' + this.state.dim + ';\n              transition: opacity .5s;\n            }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            .inside-text{\n              position: absolute;\n              right: 0px;\n              top: 80px;\n              width: 253px;\n              font-style: italic;\n              font-size: 26px;\n            }\n          '
       ),
       React.createElement(
         'div',
@@ -33437,25 +33504,7 @@ var NavMenu = React.createClass({
         React.createElement(
           'div',
           { className: 'row', id: 'main-img-bar' },
-          React.createElement(
-            'div',
-            { className: 'absolute filled home-image opacity-transition' },
-            React.createElement('div', { className: 'left-img imag' }),
-            React.createElement('div', { className: 'right-img imag' })
-          ),
-          React.createElement(
-            'div',
-            { className: 'absolute filled inside-image opacity-transition' },
-            React.createElement(
-              'div',
-              { className: 'both-img imag' },
-              React.createElement(
-                'div',
-                { className: 'inside-text' },
-                bannerText
-              )
-            )
-          )
+          imagePanel
         )
       )
     );
@@ -33465,7 +33514,7 @@ var NavMenu = React.createClass({
 module.exports = NavMenu;
 
 }).call(this,require("react"))
-},{"../functions/nav-function.js":175,"react":170}],175:[function(require,module,exports){
+},{"../functions/nav-function.js":176,"./image-slider.jsx":174,"react":170}],176:[function(require,module,exports){
 'use strict';
 
 var app = require('../app.js');
@@ -33476,7 +33525,7 @@ var navigate = function navigate(href) {
 
 module.exports = navigate;
 
-},{"../app.js":172}],176:[function(require,module,exports){
+},{"../app.js":172}],177:[function(require,module,exports){
 (function ($,Backbone){
 'use strict';
 
@@ -33493,7 +33542,7 @@ $(document).ready(function () {
 });
 
 }).call(this,require("jquery"),require("backbone"))
-},{"./app.js":172,"./backbone/router.jsx":173,"backbone":1,"jquery":29}],177:[function(require,module,exports){
+},{"./app.js":172,"./backbone/router.jsx":173,"backbone":1,"jquery":29}],178:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33539,4 +33588,4 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"react":170}]},{},[176]);
+},{"react":170}]},{},[177]);
