@@ -1,0 +1,34 @@
+.layout-fixed{
+  width: 872px;
+  margin: 0 auto;
+}
+
+.ln-white-dark-light{
+  height: 1px;
+  border-top: 1px solid #fff;
+  background-color: #e1e1e1;
+  border-bottom: 1px solid #f3f2f0;
+}
+
+.frame-white {
+	background-color:#fff;
+	height:1px;
+}
+.frame-light {
+	background-color:#f3f2f0;
+	height:1px;
+}
+.frame-dark {
+  background-color:#e1e1e1;
+	height:1px;
+}
+
+.main-tab{
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  background-color: #f7f6f4;
+  color: #6e6e6e;
+  font-size: 14px;
+  line-height: 24px;
+  transition: opacity 500ms ease;
+}

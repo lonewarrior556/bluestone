@@ -26,4 +26,9 @@ app.get('/newsroom', main);
 app.get('/careers', main);
 app.get('/contact', main);
 
+
+app.get('*', function(req, res){
+  res.send('<div>what???</div>', 404);
+});
+
 module.exports = app;

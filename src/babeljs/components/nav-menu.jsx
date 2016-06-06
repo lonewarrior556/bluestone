@@ -1,11 +1,11 @@
 const nav = require('../functions/nav-function.js');
 const ImgSlider = require('./image-slider.jsx');
 
-var map = { 'about'    : 'ABOUT US',
-            'services' : 'OUR SERVICES',
-            'newsroom' : 'NEWSROOM',
-            'careers'  : 'CAREER CENTER',
-            'contact'  : 'CONTACT US'   }
+var map = { 'about'    : 'About Us',
+            'services' : 'Our Services',
+            'newsroom' : 'Newsroom',
+            'careers'  : 'Career Center',
+            'contact'  : 'Contact Us'   }
 
 var mainImgUrls = ['/img/main-slider_trust.png', '/img/main-slider_service.png', '/img/main-slider_best-sfr3.png'];
 
@@ -65,8 +65,6 @@ var NavMenu = React.createClass({
             }
             #grad > .grad-container{
               padding:18px 14px 14px 11px;
-              width: 872px;
-              margin: 0 auto;
               overflow: hidden;
               height: ${height}px;
               transition: height 1s ease;
@@ -111,7 +109,7 @@ var NavMenu = React.createClass({
             }
           `}
         </style>
-        <div className="grad-container">
+        <div className="grad-container layout-fixed">
           <ul className="row" id="menu-bar">
             <li className="nav-item"><a href="/">HOME</a> </li>
             <li className="nav-item about"   ><a onClick={nav.bind(null,'about'   )}>ABOUT US</a>       </li>
