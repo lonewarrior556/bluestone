@@ -33298,7 +33298,7 @@ module.exports = Backbone.Router.extend({
   initialize: function initialize(options) {
     this.$root = document.getElementById(options.rootId);
     this.emitter = new EventEmitter();
-    this.nav = ReactDom.render(React.createElement(NavMenu, { emitter: this.emitter }), document.getElementById('header'));
+    ReactDom.render(React.createElement(NavMenu, { emitter: this.emitter }), document.getElementById('header'));
   },
   execute: function execute(callback, args, name) {
     this.emitter.route = name;
@@ -33329,7 +33329,7 @@ module.exports = Backbone.Router.extend({
 });
 
 }).call(this,require("backbone"),require("react-dom"),require("react"))
-},{"../components/nav-menu.jsx":176,"../pages/about.jsx":180,"../pages/careers.jsx":181,"../pages/contact.jsx":182,"../pages/home.jsx":183,"../pages/newsroom.jsx":184,"../pages/services.jsx":185,"backbone":1,"events":2,"react":170,"react-dom":32}],174:[function(require,module,exports){
+},{"../components/nav-menu.jsx":177,"../pages/about.jsx":182,"../pages/careers.jsx":183,"../pages/contact.jsx":184,"../pages/home.jsx":185,"../pages/newsroom.jsx":186,"../pages/services.jsx":187,"backbone":1,"events":2,"react":170,"react-dom":32}],174:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33353,19 +33353,23 @@ module.exports = React.createClass({
       React.createElement(
         'style',
         null,
-        '\n            .footer-text{ padding-top:15px; line-height:14px; text-align:justify; font-size: 11px; color: #282828; font-family: \'Open Sans\', sans-serif; }\n        '
+        '\n            .footer-container{ position: relative;}\n            .footer-text{ line-height:14px; text-align:justify; font-size: 11px; color: #282828; font-family: \'Open Sans\', sans-serif; position: absolute; padding-top:15px; }\n        '
       ),
       React.createElement(
-        'p',
-        { className: 'layout-fixed footer-text' },
-        'FirstKey Holdings, LLC manages three operating companies that conduct business in different sectors of real estate finance: FirstKey Mortgage, LLC (NMLS # 357510) is a licensed residential lender that purchases closed residential mortgage loans from correspondent lenders and offers financing to investors of tenant-occupied residential properties; FirstKey Lending, LLC (NMLS # 1063414) is a licensed commercial real estate lender that offers financing to large portfolio investors of tenant-occupied residential properties and commercial properties; and Towd Point Loan Servicing, LLC (NMLS # 1050560) is a licensed residential mortgage servicer that acquires the servicing rights to Fannie Mae and Freddie Mac conforming loans and FHA-insured and VA-guaranteed loans. Minnesota: This is not an offer to enter into an agreement and an offer may only be made pursuant to Minn. Stat. § 47.206 subdivisions 3 and 4. Some products may not be available in some states. Information, rates and pricing are subject to change without prior notice. All loan programs are subject to borrowers meeting appropriate underwriting conditions. This is not a commitment to lend. Other restrictions apply. All rights reserved.'
+        'div',
+        { className: 'layout-fixed footer-container' },
+        React.createElement(
+          'p',
+          { className: 'footer-text' },
+          'FirstKey Holdings, LLC manages three operating companies that conduct business in different sectors of real estate finance: FirstKey Mortgage, LLC (NMLS # 357510) is a licensed residential lender that purchases closed residential mortgage loans from correspondent lenders and offers financing to investors of tenant-occupied residential properties; FirstKey Lending, LLC (NMLS # 1063414) is a licensed commercial real estate lender that offers financing to large portfolio investors of tenant-occupied residential properties and commercial properties; and Towd Point Loan Servicing, LLC (NMLS # 1050560) is a licensed residential mortgage servicer that acquires the servicing rights to Fannie Mae and Freddie Mac conforming loans and FHA-insured and VA-guaranteed loans. Minnesota: This is not an offer to enter into an agreement and an offer may only be made pursuant to Minn. Stat. § 47.206 subdivisions 3 and 4. Some products may not be available in some states. Information, rates and pricing are subject to change without prior notice. All loan programs are subject to borrowers meeting appropriate underwriting conditions. This is not a commitment to lend. Other restrictions apply. All rights reserved.'
+        )
       )
     );
   }
 });
 
 }).call(this,require("react"))
-},{"../components/promos.jsx":177,"react":170}],175:[function(require,module,exports){
+},{"../components/promos.jsx":178,"react":170}],175:[function(require,module,exports){
 (function (React){
 "use strict";
 
@@ -33417,8 +33421,81 @@ module.exports = ImgSlider;
 (function (React){
 'use strict';
 
+var backgroundGradient = require('../functions/background-gradient-function.js');
+
+module.exports = React.createClass({
+  displayName: 'menuDropdown',
+  propTypes: { top: React.PropTypes.string,
+    left: React.PropTypes.string },
+
+  getInitialState: function getInitialState() {
+    return { state: 'menu-closed' };
+  },
+  componentDidMount: function componentDidMount() {
+    setTimeout(this.setState.bind(this, { state: 'menu-opened' }), 50);
+  },
+  render: function render() {
+    return React.createElement(
+      'div',
+      { style: { position: 'absolute', top: this.props.top, left: this.props.left, zIndex: 100 } },
+      React.createElement(
+        'style',
+        null,
+        '\n                #secret{\n                  transition: max-height .5s ease-in;\n                  overflow: hidden;\n                  border-radius: 2px;\n                }\n                #secret > li{\n                  ' + backgroundGradient('#000e15', '#0b435e', 'radial') + ';\n                  border-width: 0 1px 2px 1px;\n                  border-style: solid;\n                  border-color: #0b435e;\n                  color: white;\n                  padding: 5px 15px;\n                }\n                #secret > li:hover{\n                  ' + backgroundGradient('#0b435e', '#000e15', 'radial') + ';\n                  color: #C5B358;\n                }\n                .menu-closed{ max-height:0px; }\n                .menu-opened{ max-height: 500px; }\n\n              '
+      ),
+      React.createElement(
+        'ul',
+        { id: 'secret', className: '' + this.state.state },
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#' },
+            'Rental Finance'
+          )
+        ),
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#' },
+            'CRE Finance'
+          )
+        ),
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#' },
+            'Mortgage Service Ownership'
+          )
+        ),
+        React.createElement(
+          'li',
+          null,
+          React.createElement(
+            'a',
+            { href: '#' },
+            'Make a Payment'
+          )
+        )
+      )
+    );
+  }
+});
+
+}).call(this,require("react"))
+},{"../functions/background-gradient-function.js":179,"react":170}],177:[function(require,module,exports){
+(function (React){
+'use strict';
+
 var nav = require('../functions/nav-function.js');
 var ImgSlider = require('./image-slider.jsx');
+var MenuDropdown = require('./menu-dropdown.jsx');
+var backgroundGradient = require('../functions/background-gradient-function.js');
 
 var map = { 'about': 'About Us',
   'services': 'Our Services',
@@ -33444,22 +33521,33 @@ var NavMenu = React.createClass({
   componentWillUnmount: function componentWillUnmount() {
     this.props.emitter.removeListener('route', this.changeRoute);
   },
+  openServices: function openServices() {
+    this.setState({ servicesOpen: true });
+  },
+  closeServices: function closeServices() {
+    this.setState({ servicesOpen: false });
+  },
+
   render: function render() {
-    var imagePanel = React.createElement(
-      'div',
-      { className: 'absolute filled' },
-      React.createElement('div', { className: 'left-img imag' }),
-      React.createElement(ImgSlider, { classString: 'right-img imag', urls: mainImgUrls })
-    );
+    var imagePanel, height, imageHeight, leftImage, rightImage;
+    var servicesMenu = this.state.servicesOpen ? React.createElement(MenuDropdown, { top: '25px', left: '250px' }) : null;
 
-    var height = 290;
-    var imageHeight = 250;
-
-    var leftImage = { url: '/img/fk-home-logo.png', width: 276 };
-    var rightImage = { width: 587 };
-
-    if (this.state.page !== 'home') {
-
+    if (this.state.page === 'home') {
+      height = 290;
+      imageHeight = 250;
+      rightImage = { width: 587 };
+      leftImage = { url: '/img/fk-home-logo.png', width: 276 };
+      imagePanel = React.createElement(
+        'div',
+        { className: 'absolute filled' },
+        React.createElement('div', { className: 'left-img imag' }),
+        React.createElement(ImgSlider, { classString: 'right-img imag', urls: mainImgUrls })
+      );
+    } else {
+      height = 174;
+      imageHeight = 136;
+      rightImage = { width: 0 };
+      leftImage = { url: '/img/inside-banner.png', width: 872 };
       imagePanel = React.createElement(
         'div',
         { className: 'absolute filled' },
@@ -33473,19 +33561,14 @@ var NavMenu = React.createClass({
           )
         )
       );
-
-      leftImage = { url: '/img/inside-banner.png', width: 872 };
-      height = 174;
-      imageHeight = 136;
     }
-
     return React.createElement(
       'section',
       { id: 'grad' },
       React.createElement(
         'style',
         null,
-        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              background: #000e15;\n              background: -webkit-linear-gradient(#000e15, #0b435e);\n              background: -o-linear-gradient(#000e15, #0b435e);\n              background: -moz-linear-gradient(#000e15, #0b435e);\n              background: linear-gradient(#000e15, #0b435e);\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              margin-bottom: 12px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            #main-img-bar{\n              position:relative;\n              opacity: ' + this.state.dim + ';\n              transition: opacity .5s;\n            }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            .inside-text{\n              position: absolute;\n              right: 0px;\n              top: 80px;\n              width: 253px;\n              font-style: italic;\n              font-size: 26px;\n            }\n          '
+        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              ' + backgroundGradient('#000e15', '#0b435e') + ';\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              margin-bottom: 12px;\n              position: relative;\n              font-size:0px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n              font-size:15px;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            #main-img-bar{\n              position:relative;\n              transition: opacity .5s;\n            }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            .inside-text{\n              position: absolute;\n              right: 0px;\n              top: 80px;\n              width: 253px;\n              font-style: italic;\n              font-size: 26px;\n            }\n          '
       ),
       React.createElement(
         'div',
@@ -33509,19 +33592,18 @@ var NavMenu = React.createClass({
             React.createElement(
               'a',
               { onClick: nav.bind(null, 'about') },
-              'ABOUT US'
-            ),
-            '       '
+              'ABOUT US     '
+            )
           ),
           React.createElement(
             'li',
-            { className: 'nav-item services' },
+            { className: 'nav-item services', onMouseEnter: this.openServices, onMouseLeave: this.closeServices },
             React.createElement(
               'a',
               { onClick: nav.bind(null, 'services') },
-              'OUR SERVICES'
+              'OUR SERVICES '
             ),
-            '   '
+            servicesMenu
           ),
           React.createElement(
             'li',
@@ -33529,9 +33611,8 @@ var NavMenu = React.createClass({
             React.createElement(
               'a',
               { onClick: nav.bind(null, 'newsroom') },
-              'NEWSROOM    '
-            ),
-            '   '
+              'NEWSROOM     '
+            )
           ),
           React.createElement(
             'li',
@@ -33540,8 +33621,7 @@ var NavMenu = React.createClass({
               'a',
               { onClick: nav.bind(null, 'careers') },
               'CAREER CENTER'
-            ),
-            '  '
+            )
           ),
           React.createElement(
             'li',
@@ -33549,14 +33629,13 @@ var NavMenu = React.createClass({
             React.createElement(
               'a',
               { onClick: nav.bind(null, 'contact') },
-              'CONTACT US'
-            ),
-            '     '
+              'CONTACT US   '
+            )
           )
         ),
         React.createElement(
           'div',
-          { className: 'row', id: 'main-img-bar' },
+          { className: 'row', id: 'main-img-bar', style: { opacity: this.state.dim } },
           imagePanel
         )
       )
@@ -33567,7 +33646,7 @@ var NavMenu = React.createClass({
 module.exports = NavMenu;
 
 }).call(this,require("react"))
-},{"../functions/nav-function.js":178,"./image-slider.jsx":175,"react":170}],177:[function(require,module,exports){
+},{"../functions/background-gradient-function.js":179,"../functions/nav-function.js":180,"./image-slider.jsx":175,"./menu-dropdown.jsx":176,"react":170}],178:[function(require,module,exports){
 (function (React){
 "use strict";
 
@@ -33595,7 +33674,7 @@ module.exports = React.createClass({
       React.createElement(
         "style",
         null,
-        "\n\n          .promo{ float:left; width:250px;}\n          .promo-title{\n            color: #09384e;\n            font-size: 15.5px;\n            font-family: 'Droid Serif', serif;\n            letter-spacing: -.9px;\n            margin-bottom: 5px;\n          }\n          .promo-left{ padding: 15px 30px 22px 0}\n          .promo-mid { padding: 15px 30px 22px 30px; border-left: 1px solid #e1e1e1; border-right: 1px solid #e1e1e1; }\n          .promo-right{padding: 15px 0 22px 30px}\n          .promo-image-container{ position:relative; height: 92px;}\n          .promo-image-container img{ position: absolute; left:0; top:0; transition: opacity .5s ease;}\n          .promo-text{ margin-top: 15px; height: 160px; }\n\n          .promo-button{ position: relative; height: 28px;}\n          .promo-button img{ position: absolute; left:0; top:0; }\n\n        "
+        "\n\n          .promo{ float:left; width:250px;}\n          .promo-title{\n            color: #09384e;\n            font-size: 15.5px;\n            font-family: 'Droid Serif', serif;\n            letter-spacing: -.9px;\n            margin-bottom: 5px;\n          }\n          .promo-left{ padding: 15px 30px 22px 0}\n          .promo-mid { padding: 15px 30px 22px 30px; border-left: 1px solid #e1e1e1; border-right: 1px solid #e1e1e1; }\n          .promo-right{padding: 15px 0 22px 30px}\n          .promo-image-container{ position:relative; height: 92px;}\n          .promo-image-container img{ position: absolute; left:0; top:0; transition: opacity .5s ease;}\n          .promo-text{ margin-top: 15px; height: 160px; }\n\n          .promo-button{ position: relative; height: 28px; width:105px}\n          .promo-button img{ position: absolute; left:0; top:0; }\n\n        "
       ),
       React.createElement(
         "div",
@@ -33704,7 +33783,19 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"react":170}],178:[function(require,module,exports){
+},{"react":170}],179:[function(require,module,exports){
+'use strict';
+
+var app = require('../app.js');
+
+var grad = function grad(color1, color2, type) {
+        type = type || 'linear';
+        return 'background: ' + color1 + ';\n          background: -webkit-' + type + '-gradient(' + color1 + ', ' + color2 + ');\n          background: -o-' + type + '-gradient(' + color1 + ', ' + color2 + ');\n          background: -moz-' + type + '-gradient(' + color1 + ', ' + color2 + ');\n          background: ' + type + '-gradient(' + color1 + ', ' + color2 + ')';
+};
+
+module.exports = grad;
+
+},{"../app.js":172}],180:[function(require,module,exports){
 'use strict';
 
 var app = require('../app.js');
@@ -33715,7 +33806,7 @@ var navigate = function navigate(href) {
 
 module.exports = navigate;
 
-},{"../app.js":172}],179:[function(require,module,exports){
+},{"../app.js":172}],181:[function(require,module,exports){
 (function ($,Backbone){
 'use strict';
 
@@ -33732,7 +33823,7 @@ $(document).ready(function () {
 });
 
 }).call(this,require("jquery"),require("backbone"))
-},{"./app.js":172,"./backbone/router.jsx":173,"backbone":1,"jquery":29}],180:[function(require,module,exports){
+},{"./app.js":172,"./backbone/router.jsx":173,"backbone":1,"jquery":29}],182:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33768,7 +33859,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":174,"../components/promos.jsx":177,"react":170}],181:[function(require,module,exports){
+},{"../components/footer.jsx":174,"../components/promos.jsx":178,"react":170}],183:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33804,7 +33895,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":174,"../components/promos.jsx":177,"react":170}],182:[function(require,module,exports){
+},{"../components/footer.jsx":174,"../components/promos.jsx":178,"react":170}],184:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33840,7 +33931,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":174,"../components/promos.jsx":177,"react":170}],183:[function(require,module,exports){
+},{"../components/footer.jsx":174,"../components/promos.jsx":178,"react":170}],185:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33876,7 +33967,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":174,"../components/promos.jsx":177,"react":170}],184:[function(require,module,exports){
+},{"../components/footer.jsx":174,"../components/promos.jsx":178,"react":170}],186:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33912,7 +34003,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":174,"../components/promos.jsx":177,"react":170}],185:[function(require,module,exports){
+},{"../components/footer.jsx":174,"../components/promos.jsx":178,"react":170}],187:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -33948,4 +34039,4 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":174,"../components/promos.jsx":177,"react":170}]},{},[179]);
+},{"../components/footer.jsx":174,"../components/promos.jsx":178,"react":170}]},{},[181]);

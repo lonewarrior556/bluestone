@@ -25,7 +25,7 @@ module.exports = Backbone.Router.extend({
     initialize: function(options){
       this.$root = document.getElementById(options.rootId);
       this.emitter = new EventEmitter();
-      this.nav = ReactDom.render( <NavMenu emitter={this.emitter}/>, document.getElementById('header'));
+      ReactDom.render( <NavMenu emitter={this.emitter}/>, document.getElementById('header'));
     },
     execute: function(callback, args, name) {
       this.emitter.route = name;

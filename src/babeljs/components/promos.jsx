@@ -36,7 +36,7 @@ module.exports = React.createClass({
           .promo-image-container img{ position: absolute; left:0; top:0; transition: opacity .5s ease;}
           .promo-text{ margin-top: 15px; height: 160px; }
 
-          .promo-button{ position: relative; height: 28px;}
+          .promo-button{ position: relative; height: 28px; width:105px}
           .promo-button img{ position: absolute; left:0; top:0; }
 
         `}</style>

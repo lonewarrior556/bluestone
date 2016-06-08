@@ -31,4 +31,6 @@
   font-size: 14px;
   line-height: 24px;
   transition: opacity 500ms ease;
+  padding-left: 11px;
+  padding-right: 14px;
 }
