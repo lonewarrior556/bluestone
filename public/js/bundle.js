@@ -33343,7 +33343,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {
@@ -33432,7 +33435,10 @@ module.exports = React.createClass({
     return { state: 'menu-closed' };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { state: 'menu-opened' }), 50);
+    this.timeOut = setTimeout(this.setState.bind(this, { state: 'menu-opened' }), 50);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   render: function render() {
     return React.createElement(
@@ -33568,7 +33574,7 @@ var NavMenu = React.createClass({
       React.createElement(
         'style',
         null,
-        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              ' + backgroundGradient('#000e15', '#0b435e') + ';\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              margin-bottom: 12px;\n              position: relative;\n              font-size:0px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n              font-size:15px;\n            }\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            #main-img-bar{\n              position:relative;\n              transition: opacity .5s;\n            }\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            .inside-text{\n              position: absolute;\n              right: 0px;\n              top: 80px;\n              width: 253px;\n              font-style: italic;\n              font-size: 26px;\n            }\n          '
+        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              ' + backgroundGradient('#000e15', '#0b435e') + ';\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              margin-bottom: 12px;\n              position: relative;\n              font-size:0px;\n            }\n            #menu-bar > li{\n              float:left;\n              padding: 2px 5px;\n              margin: 0 47px 0 0;\n              font-size:15px;\n            }\n\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            #main-img-bar{ position:relative; transition: opacity .5s; }\n\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n            }\n            .inside-text{\n              position: absolute;\n              top: 80px;\n              right: 0px;\n              width: 253px;\n              font-size: 26px;\n              font-style: italic;\n            }\n          '
       ),
       React.createElement(
         'div',
@@ -33838,7 +33844,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {
@@ -33874,7 +33883,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {
@@ -33910,7 +33922,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {
@@ -33946,7 +33961,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {
@@ -33982,7 +34000,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {
@@ -34018,7 +34039,10 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function handleClick() {},
   render: function render() {

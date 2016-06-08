@@ -8,7 +8,10 @@ module.exports = React.createClass({
     return {opacity: .1};
   },
   componentDidMount: function() {
-    setTimeout(this.setState.bind(this, {opacity: 1}), 500)
+    this.timeOut = setTimeout(this.setState.bind(this, {opacity: 1}), 500)
+  },
+  componentWillUnmount: function() {
+    clearTimeout(this.timeOut);
   },
   handleClick: function(){
   },

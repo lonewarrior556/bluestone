@@ -84,13 +84,12 @@ var NavMenu = React.createClass({
               margin: 0 47px 0 0;
               font-size:15px;
             }
+
             #menu-bar > li:first-child{ margin-left:0; padding-left:0}
             #menu-bar > li:last-child{ margin-right:0; padding-right:0}
             #menu-bar > li:not(.${this.state.page}):hover{ color: #C5B358 }
-            #main-img-bar{
-              position:relative;
-              transition: opacity .5s;
-            }
+            #main-img-bar{ position:relative; transition: opacity .5s; }
+
             .left-img{
               background-image: url(${leftImage.url});
               width: ${leftImage.width}px;
@@ -106,11 +105,11 @@ var NavMenu = React.createClass({
             }
             .inside-text{
               position: absolute;
-              right: 0px;
               top: 80px;
+              right: 0px;
               width: 253px;
-              font-style: italic;
               font-size: 26px;
+              font-style: italic;
             }
           `}
         </style>

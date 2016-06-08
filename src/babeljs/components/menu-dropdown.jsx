@@ -10,7 +10,10 @@ module.exports = React.createClass({
     return {state: 'menu-closed'};
   },
   componentDidMount: function() {
-    setTimeout(this.setState.bind(this, { state: 'menu-opened' } ), 50)
+    this.timeOut = setTimeout(this.setState.bind(this, { state: 'menu-opened' } ), 50)
+  },
+  componentWillUnmount: function() {
+    clearTimeout(this.timeOut);
   },
   render: function() {
     return(
