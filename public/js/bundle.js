@@ -33958,7 +33958,7 @@ module.exports = React.createClass({
   displayName: 'Homepage',
 
   getInitialState: function getInitialState() {
-    return { opacity: .1 };
+    return { opacity: .1, website: "" };
   },
   componentDidMount: function componentDidMount() {
     this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
@@ -33966,15 +33966,56 @@ module.exports = React.createClass({
   componentWillUnmount: function componentWillUnmount() {
     clearTimeout(this.timeOut);
   },
-  handleClick: function handleClick() {},
+  handleClick: function handleClick(e) {
+    this.setState({ website: e.target.textContent });
+  },
   render: function render() {
     return React.createElement(
       'section',
       { id: 'home-page', className: 'main-tab', style: { opacity: this.state.opacity } },
       React.createElement(
+        'style',
+        null,
+        '\n            .pdf-select{\n              width:49%;\n              float:left;\n              padding:40px 0 40px 0;\n              border: 1px solid black;\n            }\n            .pdf-select>li{\n              float:left;\n              padding:25px;\n              cursor:pointer;\n            }\n            .pdf-select>li:hover{\n              font-weight:bold;\n            }\n            .pdf-select:after{\n              content:\' \';\n              display:block;\n              clear:both;\n            }\n            iframe{\n              float:right;\n              width:50%;\n              height:500px;\n            }\n            .layout-fixed:after{\n              content:\'\';\n              display:block;\n              clear:both;\n            }\n        '
+      ),
+      React.createElement(
         'div',
         { className: 'layout-fixed' },
-        'this is the home page'
+        React.createElement(
+          'ul',
+          { className: 'pdf-select' },
+          React.createElement(
+            'li',
+            { onClick: this.handleClick },
+            'https://s3.amazonaws.com/fkh-website-public/Desktop.pdf'
+          ),
+          React.createElement(
+            'li',
+            { onClick: this.handleClick },
+            'https://s3.amazonaws.com/fkh-website-public/Employee+Referral+Policy.pdf'
+          ),
+          React.createElement(
+            'li',
+            { onClick: this.handleClick },
+            'https://s3.amazonaws.com/fkh-website-public/Mobile.pdf'
+          ),
+          React.createElement(
+            'li',
+            { onClick: this.handleClick },
+            'https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fs3.amazonaws.com%2Ffkh-website-public%2FNew%2BMicrosoft%2BExcel%2BWorksheet.xlsx'
+          ),
+          React.createElement(
+            'li',
+            { onClick: this.handleClick },
+            'https://s3.amazonaws.com/fkh-website-public/website.txt'
+          ),
+          React.createElement(
+            'li',
+            { onClick: this.handleClick },
+            'https://s3.amazonaws.com/fkh-website-public/thisguy13.tif'
+          )
+        ),
+        React.createElement('iframe', { src: this.state.website })
       ),
       React.createElement('div', { className: 'ln-white-dark-light' }),
       React.createElement(Promos, null),
