@@ -1,9 +1,8 @@
-const Promos = require('../components/promos.jsx');
 const Footer = require('../components/footer.jsx');
 
 module.exports = React.createClass({
 
-  displayName: 'Homepage',
+  displayName: 'Intro',
 
   getInitialState: function() {
     return {opacity: .1, website:""};
@@ -20,50 +19,30 @@ module.exports = React.createClass({
   render: function() {
     return(
       <section id="home-page" className="main-tab" style={{opacity: this.state.opacity}}>
-        <style>{`
-            .pdf-select{
-              width:49%;
-              float:left;
-              padding:40px 0 40px 0;
-              border: 1px solid black;
-            }
-            .pdf-select>li{
-              float:left;
-              padding:25px;
-              cursor:pointer;
-            }
-            .pdf-select>li:hover{
-              font-weight:bold;
-            }
-            .pdf-select:after{
-              content:' ';
-              display:block;
-              clear:both;
-            }
-            iframe{
-              float:right;
-              width:50%;
-              height:500px;
-            }
-            .layout-fixed:after{
-              content:'';
-              display:block;
-              clear:both;
-            }
-        `}</style>
         <div className="layout-fixed">
-            <ul className="pdf-select">
-              <li onClick={this.handleClick}>https://s3.amazonaws.com/fkh-website-public/Desktop.pdf</li>
-              <li onClick={this.handleClick}>https://s3.amazonaws.com/fkh-website-public/Employee+Referral+Policy.pdf</li>
-              <li onClick={this.handleClick}>https://s3.amazonaws.com/fkh-website-public/Mobile.pdf</li>
-              <li onClick={this.handleClick}>https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fs3.amazonaws.com%2Ffkh-website-public%2FNew%2BMicrosoft%2BExcel%2BWorksheet.xlsx</li>
-              <li onClick={this.handleClick}>https://s3.amazonaws.com/fkh-website-public/website.txt</li>
-              <li onClick={this.handleClick}>https://s3.amazonaws.com/fkh-website-public/thisguy13.tif</li>
-          </ul>
-            <iframe src={this.state.website}></iframe>
+          <h5>
+            Create a basic prototype that will have the following parts:
+          </h5>
+          <ol>
+            <li>
+              List of all Products (home page)
+              <ol style={{listStyleType:'circle'}}>
+                <li>A simple vertical list of products. Each product name can be clicked which will take user to a “Product Detail” screen for the clicked item.</li>
+              </ol>
+            </li>
+            <li>
+              Product Detail Screen
+              <ol style={{listStyleType:'circle'}}>
+                <li>It will list Product details: name, number, description, images. All fields will be readonly. Images field will list all images as links.</li>
+                <li>There will be an Update button. Clicking the button will:</li>
+                <li>Remove / hide the Update button from the page.</li>
+                <li>Enable edition of all fields of the currently displayed Product Detail.</li>
+                <li>Two buttons will be added: Save and Cancel (Save will persist the changes and Cancel will discards all changes and disable edition).</li>
+              </ol>
+            </li>
+          </ol>
         </div>
         <div className="ln-white-dark-light"></div>
-        <Promos/>
         <div className="ln-white-dark-light"></div>
         <Footer/>
       </section>

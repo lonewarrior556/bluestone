@@ -1,32 +1,31 @@
+//libs
+const $ = require('jquery');
+const _ = require('underscore');
 const EventEmitter = require('events');
 //pages
 const Home = require('../pages/home.jsx');
-const About = require('../pages/about.jsx');
-const Services = require('../pages/services.jsx');
-const Newsroom = require('../pages/newsroom.jsx');
-const Careers = require('../pages/careers.jsx');
-const Contact = require('../pages/contact.jsx');
+const List = require('../pages/list.jsx');
+const Details = require('../pages/details.jsx');
 //components
 const NavMenu = require('../components/nav-menu.jsx');
 
 
+var self;
 module.exports = Backbone.Router.extend({
 
     routes: {
                 ''           : 'home',
-                'about'      : 'about',
-                'services'   : 'services',
-          'services/:page'   : 'servicesPage',
-                'newsroom'   : 'newsroom',
-                'careers'    : 'careers',
-                'contact'    : 'contact'
+                'list'       : 'list',
+          'details/:name'    : 'details'
     },
 
     initialize: function(options){
+      self = this;
       this.$root = document.getElementById(options.rootId);
       this.emitter = new EventEmitter();
       ReactDom.render( <NavMenu emitter={this.emitter}/>, document.getElementById('header'));
     },
+
     execute: function(callback, args, name) {
       this.emitter.route = name;
       this.emitter.emit('route');
@@ -36,23 +35,17 @@ module.exports = Backbone.Router.extend({
     home: function(){
       ReactDom.render( <Home/>, this.$root );
     },
-    about: function(){
-      ReactDom.render( <About/>, this.$root );
-    },
-    services: function(){
-      ReactDom.render( <Services/>, this.$root );
-    },
-    servicesPage: function(page){
 
+    list: function(){
+      $.ajax({ url: '/data/data.json' }).then(function(data){
+        ReactDom.render( <List baseObjects={data}/>, self.$root );
+      }, console.log )
     },
-    newsroom: function(){
-      ReactDom.render( <Newsroom/>, this.$root );
-    },
-    careers: function(){
-      ReactDom.render( <Careers/>, this.$root );
-    },
-    contact: function(){
-      ReactDom.render( <Contact/>, this.$root );
-    },
+    details: function(name){
+      $.ajax({ url: '/data/data.json' }).then(function(data){
+        ReactDom.render( <Details baseObject={_.findWhere(data, {name:name})||{} }/>, self.$root );
+      }, console.log )
+
+    }
 
   })

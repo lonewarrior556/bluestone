@@ -17,8 +17,11 @@ h1, h2, li, ul, section, a, div, body{
 section {
 	display: block;
 }
-ol, ul {
+ul {
 	list-style: none;
+}
+ol > li{
+  display: list-item;
 }
 
 a {
@@ -34,6 +37,9 @@ a {
 body {
   font-family: sans-serif;
 	color: #6e6e6e
+}
+input {
+	width:100%;
 }
 
 .absolute{

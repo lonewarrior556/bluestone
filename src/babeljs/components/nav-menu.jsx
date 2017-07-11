@@ -1,15 +1,9 @@
 const nav = require('../functions/nav-function.js');
-const ImgSlider = require('./image-slider.jsx');
 const MenuDropdown = require('./menu-dropdown.jsx');
 const backgroundGradient = require('../functions/background-gradient-function.js');
 
 var map = { 'about'    : 'About Us',
-            'services' : 'Our Services',
-            'newsroom' : 'Newsroom',
-            'careers'  : 'Career Center',
-            'contact'  : 'Contact Us'   }
-
-var mainImgUrls = ['/img/main-slider_trust.png', '/img/main-slider_service.png', '/img/main-slider_best-sfr3.png'];
+            'services' : 'Our Services'}
 
 var NavMenu = React.createClass({
   getInitialState: function() {
@@ -34,7 +28,7 @@ var NavMenu = React.createClass({
 
   render: function() {
     var imagePanel, height, imageHeight, leftImage, rightImage;
-    var servicesMenu = this.state.servicesOpen ? <MenuDropdown top="25px" left="250px" /> : null;
+    var servicesMenu = this.state.servicesOpen ? <MenuDropdown top="30px" right="0" /> : null;
 
     if(this.state.page === 'home'){
        height = 290;
@@ -42,15 +36,14 @@ var NavMenu = React.createClass({
        rightImage  ={ width: 587 }
        leftImage   ={ url: '/img/fk-home-logo.png', width: 276}
        imagePanel = <div className="absolute filled">
-                       <div className="left-img imag"></div>
-                       <ImgSlider classString="right-img imag" urls={mainImgUrls}/>
+                       <div style={{height:'250px', lineHeight:'250px', fontSize:'60px', textAlign: 'center'}}>Product List Application</div>
                      </div>;
     } else{
-      height = 174;
+      height = 212;
       imageHeight = 136;
       rightImage  ={ width: 0 }
-      leftImage ={ url: '/img/inside-banner.png', width: 872 }
-      imagePanel = <div className="absolute filled">
+      leftImage ={ url: '/img/logo-color.png', width: 872 }
+      imagePanel = <div className="absolute filled" style={{background: 'rgba(255,255,255,.1)',  padding: '.5% .5% 25px'}}>
                      <div className="left-img imag"><div className="inside-text">{map[this.state.page]}</div></div>
                    </div>;
     }
@@ -79,10 +72,10 @@ var NavMenu = React.createClass({
               font-size:0px;
             }
             #menu-bar > li{
-              float:left;
+              float: left;
               padding: 2px 5px;
-              margin: 0 47px 0 0;
-              font-size:15px;
+              margin: 0 30% 0 0;
+              font-size: 20px
             }
 
             #menu-bar > li:first-child{ margin-left:0; padding-left:0}
@@ -102,6 +95,7 @@ var NavMenu = React.createClass({
             .imag{
               height: ${imageHeight}px;
               background-repeat: no-repeat;
+              background-size: contain;
             }
             .inside-text{
               position: absolute;
@@ -116,11 +110,8 @@ var NavMenu = React.createClass({
         <div className="grad-container layout-fixed">
           <ul className="row" id="menu-bar">
             <li className="nav-item"><a href="/">HOME</a> </li>
-            <li className="nav-item about"   ><a onClick={nav.bind(null,'about'   )}>ABOUT US     </a></li>
-            <li className="nav-item services" onMouseEnter={this.openServices} onMouseLeave={this.closeServices}><a onClick={nav.bind(null,'services')}>OUR SERVICES </a>{servicesMenu}</li>
-            <li className="nav-item newsroom"><a onClick={nav.bind(null,'newsroom')}>NEWSROOM     </a></li>
-            <li className="nav-item careers" ><a onClick={nav.bind(null,'careers' )}>CAREER CENTER</a></li>
-            <li className="nav-item contact" ><a onClick={nav.bind(null,'contact' )}>CONTACT US   </a></li>
+            <li className="nav-item about"   ><a href="/list">PRODUCT LIST</a></li>
+            <li className="nav-item services" onMouseEnter={this.openServices} onMouseLeave={this.closeServices}><a>DETAILS </a>{servicesMenu}</li>
           </ul>
           <div className="row" id="main-img-bar" style={{opacity: this.state.dim}}>
             {imagePanel}

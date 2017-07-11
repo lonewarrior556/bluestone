@@ -4,7 +4,7 @@ const backgroundGradient = require('../functions/background-gradient-function.js
 module.exports = React.createClass({
   displayName: 'menuDropdown',
   propTypes: {  top:   React.PropTypes.string,
-               left:  React.PropTypes.string   },
+               right:  React.PropTypes.string   },
 
   getInitialState: function() {
     return {state: 'menu-closed'};
@@ -17,7 +17,7 @@ module.exports = React.createClass({
   },
   render: function() {
     return(
-        <div style={{ position: 'absolute', top: this.props.top, left: this.props.left, zIndex: 100}}>
+        <div style={{ position: 'absolute', top: this.props.top, right: this.props.right, zIndex: 100}}>
             <style>{`
                 #secret{
                   transition: max-height .5s ease-in;
@@ -43,8 +43,6 @@ module.exports = React.createClass({
             <ul id="secret" className={`${this.state.state}`}>
               <li><a href="#">Rental Finance</a></li>
               <li><a href="#">CRE Finance</a></li>
-              <li><a href="#">Mortgage Service Ownership</a></li>
-              <li><a href="#">Make a Payment</a></li>
             </ul>
         </div>
     );

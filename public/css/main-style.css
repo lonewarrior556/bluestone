@@ -34,3 +34,12 @@
   padding-left: 11px;
   padding-right: 14px;
 }
+
+.product-link{
+  color:#00698f;
+  font-weight: bold;
+}
+.product-link:hover{
+  color:#44bcf0;
+  font-weight: bold;
+}

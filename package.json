@@ -4,7 +4,8 @@
   "description": "Project",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/node-supervisor -- bin/www"
   },
   "author": "Konrad Dudziak",
   "license": "ISC",
@@ -15,7 +16,7 @@
     "grunt": "~1.0.1",
     "grunt-browserify": "^3.8.0",
     "jade": "^1.11.0",
-    "jquery": "^2.2.0",
+    "jquery": "^3.2.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "supervisor": "^0.10.0",
