@@ -16,7 +16,7 @@ module.exports = Backbone.Router.extend({
     routes: {
                 ''           : 'home',
                 'list'       : 'list',
-          'details/:name'    : 'details'
+          'details/:id'    : 'details'
     },
 
     initialize: function(options){
@@ -41,9 +41,10 @@ module.exports = Backbone.Router.extend({
         ReactDom.render( <List baseObjects={data}/>, self.$root );
       }, console.log )
     },
-    details: function(name){
+
+    details: function(id){
       $.ajax({ url: '/data/data.json' }).then(function(data){
-        ReactDom.render( <Details baseObject={_.findWhere(data, {name:name})||{} }/>, self.$root );
+        ReactDom.render( <Details baseObjects={data} index={id}/>, self.$root );
       }, console.log )
 
     }

@@ -2858,8 +2858,12 @@ EventEmitter.prototype.emit = function(type) {
       er = arguments[1];
       if (er instanceof Error) {
         throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
       }
-      throw TypeError('Uncaught, unspecified "error" event.');
     }
   }
 
@@ -2882,18 +2886,11 @@ EventEmitter.prototype.emit = function(type) {
         break;
       // slower
       default:
-        len = arguments.length;
-        args = new Array(len - 1);
-        for (i = 1; i < len; i++)
-          args[i - 1] = arguments[i];
+        args = Array.prototype.slice.call(arguments, 1);
         handler.apply(this, args);
     }
   } else if (isObject(handler)) {
-    len = arguments.length;
-    args = new Array(len - 1);
-    for (i = 1; i < len; i++)
-      args[i - 1] = arguments[i];
-
+    args = Array.prototype.slice.call(arguments, 1);
     listeners = handler.slice();
     len = listeners.length;
     for (i = 0; i < len; i++)
@@ -2931,7 +2928,6 @@ EventEmitter.prototype.addListener = function(type, listener) {
 
   // Check for listener leak
   if (isObject(this._events[type]) && !this._events[type].warned) {
-    var m;
     if (!isUndefined(this._maxListeners)) {
       m = this._maxListeners;
     } else {
@@ -3053,7 +3049,7 @@ EventEmitter.prototype.removeAllListeners = function(type) {
 
   if (isFunction(listeners)) {
     this.removeListener(type, listeners);
-  } else {
+  } else if (listeners) {
     // LIFO order
     while (listeners.length)
       this.removeListener(type, listeners[listeners.length - 1]);
@@ -3074,15 +3070,20 @@ EventEmitter.prototype.listeners = function(type) {
   return ret;
 };
 
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
 EventEmitter.listenerCount = function(emitter, type) {
-  var ret;
-  if (!emitter._events || !emitter._events[type])
-    ret = 0;
-  else if (isFunction(emitter._events[type]))
-    ret = 1;
-  else
-    ret = emitter._events[type].length;
-  return ret;
+  return emitter.listenerCount(type);
 };
 
 function isFunction(arg) {
@@ -35221,7 +35222,7 @@ module.exports = Backbone.Router.extend({
   routes: {
     '': 'home',
     'list': 'list',
-    'details/:name': 'details'
+    'details/:id': 'details'
   },
 
   initialize: function initialize(options) {
@@ -35246,16 +35247,17 @@ module.exports = Backbone.Router.extend({
       ReactDom.render(React.createElement(List, { baseObjects: data }), self.$root);
     }, console.log);
   },
-  details: function details(name) {
+
+  details: function details(id) {
     $.ajax({ url: '/data/data.json' }).then(function (data) {
-      ReactDom.render(React.createElement(Details, { baseObject: _.findWhere(data, { name: name }) || {} }), self.$root);
+      ReactDom.render(React.createElement(Details, { baseObjects: data, index: id }), self.$root);
     }, console.log);
   }
 
 });
 
 }).call(this,require("backbone"),require("react-dom"),require("react"))
-},{"../components/nav-menu.jsx":192,"../pages/details.jsx":196,"../pages/home.jsx":197,"../pages/list.jsx":198,"backbone":1,"events":3,"jquery":27,"react":186,"react-dom":34,"underscore":187}],190:[function(require,module,exports){
+},{"../components/nav-menu.jsx":192,"../pages/details.jsx":195,"../pages/home.jsx":196,"../pages/list.jsx":197,"backbone":1,"events":3,"jquery":27,"react":186,"react-dom":34,"underscore":187}],190:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -35267,12 +35269,9 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    //transition effects
+    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
   },
-  componentWillUnmount: function componentWillUnmount() {
-    clearTimeout(this.timeOut);
-  },
-  handleClick: function handleClick() {},
   render: function render() {
     return React.createElement(
       'section',
@@ -35297,7 +35296,7 @@ module.exports = React.createClass({
 
 }).call(this,require("react"))
 },{"react":186}],191:[function(require,module,exports){
-(function (React){
+(function ($,React){
 'use strict';
 
 var backgroundGradient = require('../functions/background-gradient-function.js');
@@ -35308,15 +35307,33 @@ module.exports = React.createClass({
     right: React.PropTypes.string },
 
   getInitialState: function getInitialState() {
+    this.items = [];
     return { state: 'menu-closed' };
   },
   componentDidMount: function componentDidMount() {
-    this.timeOut = setTimeout(this.setState.bind(this, { state: 'menu-opened' }), 50);
+    var that = this;
+    $.ajax({ url: '/data/data.json' }).then(function (data) {
+      that.items = this.items = JSON.parse(localStorage["data"] || 'null') || data;
+      that.timeOut = setTimeout(that.setState.bind(that, { state: 'menu-opened' }), 50);
+    }, console.log);
   },
   componentWillUnmount: function componentWillUnmount() {
     clearTimeout(this.timeOut);
   },
   render: function render() {
+    var listItems = [];
+    for (var i = 0; i < this.items.length; i++) {
+      listItems.push(React.createElement(
+        'li',
+        { key: i },
+        React.createElement(
+          'a',
+          { href: "/details/" + i },
+          this.items[i].name
+        )
+      ));
+      this.items[i];
+    }
     return React.createElement(
       'div',
       { style: { position: 'absolute', top: this.props.top, right: this.props.right, zIndex: 100 } },
@@ -35328,40 +35345,19 @@ module.exports = React.createClass({
       React.createElement(
         'ul',
         { id: 'secret', className: '' + this.state.state },
-        React.createElement(
-          'li',
-          null,
-          React.createElement(
-            'a',
-            { href: '#' },
-            'Rental Finance'
-          )
-        ),
-        React.createElement(
-          'li',
-          null,
-          React.createElement(
-            'a',
-            { href: '#' },
-            'CRE Finance'
-          )
-        )
+        listItems
       )
     );
   }
 });
 
-}).call(this,require("react"))
-},{"../functions/background-gradient-function.js":193,"react":186}],192:[function(require,module,exports){
+}).call(this,require("jquery"),require("react"))
+},{"../functions/background-gradient-function.js":193,"jquery":27,"react":186}],192:[function(require,module,exports){
 (function (React){
 'use strict';
 
-var nav = require('../functions/nav-function.js');
 var MenuDropdown = require('./menu-dropdown.jsx');
 var backgroundGradient = require('../functions/background-gradient-function.js');
-
-var map = { 'about': 'About Us',
-  'services': 'Our Services' };
 
 var NavMenu = React.createClass({
   displayName: 'NavMenu',
@@ -35380,21 +35376,19 @@ var NavMenu = React.createClass({
     this.props.emitter.removeListener('route', this.changeRoute);
   },
   openServices: function openServices() {
-    this.setState({ servicesOpen: true });
+    this.setState({ details: true });
   },
   closeServices: function closeServices() {
-    this.setState({ servicesOpen: false });
+    this.setState({ details: false });
   },
 
   render: function render() {
-    var imagePanel, height, imageHeight, leftImage, rightImage;
-    var servicesMenu = this.state.servicesOpen ? React.createElement(MenuDropdown, { top: '30px', right: '0' }) : null;
+    var imagePanel, height, imageHeight, image;
+    var dropdownMenu = this.state.details ? React.createElement(MenuDropdown, { top: '30px', right: '0' }) : null;
 
     if (this.state.page === 'home') {
       height = 290;
-      imageHeight = 250;
-      rightImage = { width: 587 };
-      leftImage = { url: '/img/fk-home-logo.png', width: 276 };
+      image = { url: '/img/fk-home-logo.png', width: 276 };
       imagePanel = React.createElement(
         'div',
         { className: 'absolute filled' },
@@ -35404,23 +35398,23 @@ var NavMenu = React.createClass({
           'Product List Application'
         )
       );
-    } else {
+    } else if (this.state.page === 'list') {
       height = 212;
       imageHeight = 136;
-      rightImage = { width: 0 };
-      leftImage = { url: '/img/logo-color.png', width: 872 };
+      image = { url: '/img/p1.ashx', width: 872 };
       imagePanel = React.createElement(
         'div',
         { className: 'absolute filled', style: { background: 'rgba(255,255,255,.1)', padding: '.5% .5% 25px' } },
-        React.createElement(
-          'div',
-          { className: 'left-img imag' },
-          React.createElement(
-            'div',
-            { className: 'inside-text' },
-            map[this.state.page]
-          )
-        )
+        React.createElement('div', { className: 'icon-img imag' })
+      );
+    } else {
+      height = 212;
+      imageHeight = 136;
+      image = { url: '/img/details.png', width: 872 };
+      imagePanel = React.createElement(
+        'div',
+        { className: 'absolute filled', style: { background: 'white', padding: '.5% .5% 25px' } },
+        React.createElement('div', { className: 'icon-img' })
       );
     }
     return React.createElement(
@@ -35429,7 +35423,7 @@ var NavMenu = React.createClass({
       React.createElement(
         'style',
         null,
-        '\n            .' + this.state.page + '{ color: #188dcd;}\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              ' + backgroundGradient('#000e15', '#0b435e') + ';\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            #menu-bar{\n              border-bottom: 2px solid white;\n              margin-bottom: 12px;\n              position: relative;\n              font-size:0px;\n            }\n            #menu-bar > li{\n              float: left;\n              padding: 2px 5px;\n              margin: 0 30% 0 0;\n              font-size: 20px\n            }\n\n            #menu-bar > li:first-child{ margin-left:0; padding-left:0}\n            #menu-bar > li:last-child{ margin-right:0; padding-right:0}\n            #menu-bar > li:not(.' + this.state.page + '):hover{ color: #C5B358 }\n            #main-img-bar{ position:relative; transition: opacity .5s; }\n\n            .left-img{\n              background-image: url(' + leftImage.url + ');\n              width: ' + leftImage.width + 'px;\n              float: left;\n            }\n            .right-img{\n              width: ' + rightImage.width + 'px;\n              float: right;\n            }\n            .imag{\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n              background-size: contain;\n            }\n            .inside-text{\n              position: absolute;\n              top: 80px;\n              right: 0px;\n              width: 253px;\n              font-size: 26px;\n              font-style: italic;\n            }\n          '
+        '\n            #grad {\n              font-family: \'Droid Serif\', serif;\n              font-size : 15px;\n              ' + backgroundGradient('#000e15', '#0b435e') + ';\n              letter-spacing: 1px;\n              color: white;\n            }\n            #grad > .grad-container{\n              padding:18px 14px 14px 11px;\n              overflow: hidden;\n              height: ' + height + 'px;\n              transition: height 1s ease;\n            }\n            .icon-img{\n              background-image: url(' + image.url + ');\n              width: ' + image.width + 'px;\n              float: left;\n              height: ' + imageHeight + 'px;\n              background-repeat: no-repeat;\n              background-size: 275px;\n              background-position-x: 48%;\n              background-position-y: 50%;\n            }\n          '
       ),
       React.createElement(
         'div',
@@ -35464,7 +35458,7 @@ var NavMenu = React.createClass({
               null,
               'DETAILS '
             ),
-            servicesMenu
+            dropdownMenu
           )
         ),
         React.createElement(
@@ -35480,10 +35474,8 @@ var NavMenu = React.createClass({
 module.exports = NavMenu;
 
 }).call(this,require("react"))
-},{"../functions/background-gradient-function.js":193,"../functions/nav-function.js":194,"./menu-dropdown.jsx":191,"react":186}],193:[function(require,module,exports){
+},{"../functions/background-gradient-function.js":193,"./menu-dropdown.jsx":191,"react":186}],193:[function(require,module,exports){
 'use strict';
-
-var app = require('../app.js');
 
 var grad = function grad(color1, color2, type) {
         type = type || 'linear';
@@ -35492,68 +35484,81 @@ var grad = function grad(color1, color2, type) {
 
 module.exports = grad;
 
-},{"../app.js":188}],194:[function(require,module,exports){
-'use strict';
-
-var app = require('../app.js');
-
-var navigate = function navigate(href) {
-    app.router.navigate(href, true);
-};
-
-module.exports = navigate;
-
-},{"../app.js":188}],195:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 (function ($,Backbone){
 'use strict';
 
-//Global Vars ==  ReactDom,React,Backbone,Jquery, "_");
-
 var BBrouter = require('./backbone/router.jsx');
-
 var app = require('./app.js');
 
 $(document).ready(function () {
-    //set static components
-    app.router = new BBrouter({ rootId: 'root' });
-    Backbone.history.start({ pushState: true });
+  //set static components
+  app.router = new BBrouter({ rootId: 'root' });
+  Backbone.history.start({ pushState: true });
+});
+
+$(document).on("click", "a[href^='/']", function (event) {
+  var href = $(event.currentTarget).attr('href');
+  if (!event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+    event.preventDefault();
+    //  Remove leading slashes
+    var url = href.replace(/^\//, '').replace('\#\!\/', '');
+    //  Instruct Backbone to trigger routing events
+    app.router.navigate(url, true);
+    return false;
+  }
 });
 
 }).call(this,require("jquery"),require("backbone"))
-},{"./app.js":188,"./backbone/router.jsx":189,"backbone":1,"jquery":27}],196:[function(require,module,exports){
+},{"./app.js":188,"./backbone/router.jsx":189,"backbone":1,"jquery":27}],195:[function(require,module,exports){
 (function (React){
 'use strict';
 
+//libs
+var _ = require('underscore');
+//components
 var Footer = require('../components/footer.jsx');
 
 module.exports = React.createClass({
   propTypes: {
-    baseObject: React.PropTypes.object.isRequired
+    baseObjects: React.PropTypes.array.isRequired,
+    index: React.PropTypes.string.isRequired
   },
   displayName: 'details',
 
   getInitialState: function getInitialState() {
-    return { opacity: .1, disabled: true };
+    //update load from save or defaults
+    this.items = JSON.parse(localStorage["data"] || 'null') || this.props.baseObjects;
+    return { opacity: .1, disabled: true, index: this.props.index, item: this.items[this.props.index] };
   },
   componentDidMount: function componentDidMount() {
-    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
+    //transition effects
+    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
   },
-  componentWillUnmount: function componentWillUnmount() {
-    clearTimeout(this.timeOut);
+  componentWillReceiveProps: function componentWillReceiveProps(props) {
+    this.setState({ disabled: true, index: props.index, item: this.items[props.index] });
   },
   onUpdateClick: function onUpdateClick() {
-    this.setState({ disabled: false });
+    this.tempItem = _.clone(this.items[this.state.index]);
+    this.setState({ disabled: false, item: this.tempItem });
+  },
+  updateTemp: function updateTemp(obj, key, event) {
+    obj[key] = event.target.value;
+    this.setState({ item: this.tempItem });
   },
   onSave: function onSave() {
-    this.setState({ disabled: true });
+    this.items[this.props.index] = this.tempItem;
+    localStorage["data"] = JSON.stringify(this.items);
+    this.setState({ disabled: true, item: _.clone(this.tempItem) });
   },
   onCancel: function onCancel() {
-    this.setState({ disabled: true });
+    this.setState({ disabled: true, item: this.items[this.props.index] });
   },
   render: function render() {
 
     var fields = [];
-    for (var key in this.props.baseObject) {
+    var activeItem = this.state.item;
+    for (var key in activeItem) {
       fields.push(React.createElement(
         'label',
         { key: key },
@@ -35561,33 +35566,14 @@ module.exports = React.createClass({
       ));
 
       if (key === "images") {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          for (var _iterator = this.props.baseObject[key][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var item = _step.value;
-
-            fields.push(React.createElement('input', { key: item['name'], type: 'text', defaultValue: item['name'] }));
-            fields.push(React.createElement('input', { key: item['url'], type: 'text', defaultValue: item['url'] }));
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
+        for (var i = 0; i < activeItem[key].length; i++) {
+          var item = activeItem[key][i];
+          fields.push(React.createElement('input', { key: 'a' + i, type: 'text', placeholder: 'name', value: item['name'], onChange: this.updateTemp.bind(this, item, 'name') }));
+          fields.push(React.createElement('input', { key: 'b' + i, type: 'text', placeholder: 'url', value: item['url'], onChange: this.updateTemp.bind(this, item, 'url') }));
+          fields.push(React.createElement('hr', { key: 'c' + i }));
         }
       } else {
-        fields.push(React.createElement('input', { key: 'i' + key, type: 'text', defaultValue: this.props.baseObject[key] }));
+        fields.push(React.createElement('input', { key: 'i' + key, type: 'text', value: this.state.item[key], onChange: this.updateTemp.bind(this, activeItem, key) }));
       }
     }
     var buttons = [];
@@ -35635,7 +35621,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":190,"react":186}],197:[function(require,module,exports){
+},{"../components/footer.jsx":190,"react":186,"underscore":187}],196:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -35649,13 +35635,8 @@ module.exports = React.createClass({
     return { opacity: .1, website: "" };
   },
   componentDidMount: function componentDidMount() {
-    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
-  },
-  componentWillUnmount: function componentWillUnmount() {
-    clearTimeout(this.timeOut);
-  },
-  handleClick: function handleClick(e) {
-    this.setState({ website: e.target.textContent });
+    //transition effects
+    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
   },
   render: function render() {
     return React.createElement(
@@ -35730,7 +35711,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":190,"react":186}],198:[function(require,module,exports){
+},{"../components/footer.jsx":190,"react":186}],197:[function(require,module,exports){
 (function (React){
 'use strict';
 
@@ -35746,33 +35727,31 @@ module.exports = React.createClass({
     return { opacity: .1 };
   },
   componentDidMount: function componentDidMount() {
-    this.timeOut = setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
-  },
-  componentWillUnmount: function componentWillUnmount() {
-    clearTimeout(this.timeOut);
+    //transition effects
+    setTimeout(this.setState.bind(this, { opacity: 1 }), 500);
   },
   render: function render() {
-
+    //update load from save or defaults
+    var items = JSON.parse(localStorage["data"] || 'null') || this.props.baseObjects;
     var list = [];
-    for (var i = 0; i < this.props.baseObjects.length; i++) {
-      var obj = this.props.baseObjects[i];
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
       list.push(React.createElement(
         'li',
         { key: i, style: { padding: '10px', borderBottom: '1px solid black' } },
         React.createElement(
           'a',
-          { className: 'product-link', href: '/details/' + obj.name },
-          obj.name
+          { className: 'product-link', href: '/details/' + i },
+          item.name
         ),
         '\xA0\xA0',
         React.createElement(
           'span',
           null,
-          obj.description
+          item.description
         )
       ));
     }
-
     return React.createElement(
       'section',
       { id: 'about-page', className: 'main-tab', style: { opacity: this.state.opacity } },
@@ -35793,4 +35772,4 @@ module.exports = React.createClass({
 });
 
 }).call(this,require("react"))
-},{"../components/footer.jsx":190,"react":186}]},{},[195]);
+},{"../components/footer.jsx":190,"react":186}]},{},[194]);

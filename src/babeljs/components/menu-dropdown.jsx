@@ -7,15 +7,25 @@ module.exports = React.createClass({
                right:  React.PropTypes.string   },
 
   getInitialState: function() {
+    this.items = [];
     return {state: 'menu-closed'};
   },
   componentDidMount: function() {
-    this.timeOut = setTimeout(this.setState.bind(this, { state: 'menu-opened' } ), 50)
+    var that = this;
+    $.ajax({ url: '/data/data.json' }).then(function(data){
+      that.items =   this.items = JSON.parse(localStorage["data"] || 'null') || data;
+      that.timeOut = setTimeout(that.setState.bind(that, { state: 'menu-opened' } ), 50)
+    }, console.log )
   },
   componentWillUnmount: function() {
     clearTimeout(this.timeOut);
   },
   render: function() {
+    let listItems = [];
+    for (let i = 0; i < this.items.length; i++) {
+      listItems.push(<li key={i}><a href={"/details/"+ i }>{this.items[i].name}</a></li>)
+      this.items[i]
+    }
     return(
         <div style={{ position: 'absolute', top: this.props.top, right: this.props.right, zIndex: 100}}>
             <style>{`
@@ -41,8 +51,7 @@ module.exports = React.createClass({
 
               `}</style>
             <ul id="secret" className={`${this.state.state}`}>
-              <li><a href="#">Rental Finance</a></li>
-              <li><a href="#">CRE Finance</a></li>
+              {listItems}
             </ul>
         </div>
     );

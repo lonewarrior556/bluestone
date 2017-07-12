@@ -10,22 +10,20 @@ module.exports = React.createClass({
     return {opacity: .1};
   },
   componentDidMount: function() {
-    this.timeOut = setTimeout(this.setState.bind(this, {opacity: 1}), 500)
-  },
-  componentWillUnmount: function(){
-    clearTimeout(this.timeOut);
+    //transition effects
+    setTimeout(this.setState.bind(this, {opacity: 1}), 500)
   },
   render: function() {
-
+    //update load from save or defaults
+    let items = JSON.parse(localStorage["data"] || 'null') || this.props.baseObjects;
     let list = []
-    for (var i = 0; i < this.props.baseObjects.length; i++) {
-      let obj = this.props.baseObjects[i];
+    for (var i = 0; i < items.length; i++) {
+      let item = items[i];
       list.push(<li key={i} style={{padding:'10px', borderBottom:'1px solid black'}}>
-                  <a className="product-link" href={`/details/${obj.name}`}>{obj.name}</a>
-                  &nbsp;&nbsp;<span>{obj.description}</span>
+                  <a className="product-link" href={`/details/${i}`}>{item.name}</a>
+                  &nbsp;&nbsp;<span>{item.description}</span>
                 </li>)
     }
-
     return(
       <section id="about-page" className="main-tab" style={{opacity: this.state.opacity}}>
         <div className="ln-white-dark-light"></div>

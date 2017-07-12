@@ -10,18 +10,22 @@
   border-bottom: 1px solid #f3f2f0;
 }
 
-.frame-white {
-	background-color:#fff;
-	height:1px;
+#menu-bar{
+  border-bottom: 2px solid white;
+  margin-bottom: 12px;
+  position: relative;
+  font-size:0px;
 }
-.frame-light {
-	background-color:#f3f2f0;
-	height:1px;
+#menu-bar > li{
+  float: left;
+  padding: 2px 5px;
+  margin: 0 30% 0 0;
+  font-size: 20px
 }
-.frame-dark {
-  background-color:#e1e1e1;
-	height:1px;
-}
+
+#menu-bar > li:last-child{ margin-right:0; padding-right:0}
+#menu-bar > li > a:hover{ color: #C5B358 }
+#main-img-bar{ position:relative; transition: opacity .5s; }
 
 .main-tab{
   font-family: 'Open Sans', sans-serif;
@@ -42,4 +46,10 @@
 .product-link:hover{
   color:#44bcf0;
   font-weight: bold;
+}
+fieldset{
+  color:green;
+}
+fieldset:disabled{
+  color:red;
 }

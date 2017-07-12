@@ -6,12 +6,8 @@ module.exports = React.createClass({
     return {opacity: .1};
   },
   componentDidMount: function() {
-    this.timeOut = setTimeout(this.setState.bind(this, {opacity: 1}), 500)
-  },
-  componentWillUnmount: function() {
-    clearTimeout(this.timeOut);
-  },
-  handleClick: function(){
+    //transition effects
+    setTimeout(this.setState.bind(this, {opacity: 1}), 500)
   },
   render: function() {
     return(

@@ -1,9 +1,5 @@
-const nav = require('../functions/nav-function.js');
 const MenuDropdown = require('./menu-dropdown.jsx');
 const backgroundGradient = require('../functions/background-gradient-function.js');
-
-var map = { 'about'    : 'About Us',
-            'services' : 'Our Services'}
 
 var NavMenu = React.createClass({
   getInitialState: function() {
@@ -20,38 +16,41 @@ var NavMenu = React.createClass({
     this.props.emitter.removeListener('route', this.changeRoute);
   },
   openServices: function(){
-    this.setState({servicesOpen:true});
+    this.setState({details:true});
   },
   closeServices: function(){
-    this.setState({servicesOpen:false});
+    this.setState({details:false});
   },
 
   render: function() {
-    var imagePanel, height, imageHeight, leftImage, rightImage;
-    var servicesMenu = this.state.servicesOpen ? <MenuDropdown top="30px" right="0" /> : null;
+    var imagePanel, height, imageHeight, image;
+    var dropdownMenu = this.state.details ? <MenuDropdown top="30px" right="0" /> : null;
 
     if(this.state.page === 'home'){
        height = 290;
-       imageHeight = 250;
-       rightImage  ={ width: 587 }
-       leftImage   ={ url: '/img/fk-home-logo.png', width: 276}
+       image   ={ url: '/img/fk-home-logo.png', width: 276}
        imagePanel = <div className="absolute filled">
                        <div style={{height:'250px', lineHeight:'250px', fontSize:'60px', textAlign: 'center'}}>Product List Application</div>
                      </div>;
+    } else if (this.state.page === 'list'){
+      height = 212;
+      imageHeight = 136;
+      image ={ url: '/img/p1.ashx', width: 872 }
+      imagePanel = <div className="absolute filled" style={{background: 'rgba(255,255,255,.1)',  padding: '.5% .5% 25px'}}>
+                     <div className="icon-img imag"></div>
+                   </div>;
     } else{
       height = 212;
       imageHeight = 136;
-      rightImage  ={ width: 0 }
-      leftImage ={ url: '/img/logo-color.png', width: 872 }
-      imagePanel = <div className="absolute filled" style={{background: 'rgba(255,255,255,.1)',  padding: '.5% .5% 25px'}}>
-                     <div className="left-img imag"><div className="inside-text">{map[this.state.page]}</div></div>
+      image ={ url: '/img/details.png', width: 872 }
+      imagePanel = <div className="absolute filled" style={{background: 'white',  padding: '.5% .5% 25px'}}>
+                     <div className="icon-img"></div>
                    </div>;
     }
     return (
       <section id="grad">
         <style>
           {`
-            .${this.state.page}{ color: #188dcd;}
             #grad {
               font-family: 'Droid Serif', serif;
               font-size : 15px;
@@ -65,53 +64,23 @@ var NavMenu = React.createClass({
               height: ${height}px;
               transition: height 1s ease;
             }
-            #menu-bar{
-              border-bottom: 2px solid white;
-              margin-bottom: 12px;
-              position: relative;
-              font-size:0px;
-            }
-            #menu-bar > li{
+            .icon-img{
+              background-image: url(${image.url});
+              width: ${image.width}px;
               float: left;
-              padding: 2px 5px;
-              margin: 0 30% 0 0;
-              font-size: 20px
-            }
-
-            #menu-bar > li:first-child{ margin-left:0; padding-left:0}
-            #menu-bar > li:last-child{ margin-right:0; padding-right:0}
-            #menu-bar > li:not(.${this.state.page}):hover{ color: #C5B358 }
-            #main-img-bar{ position:relative; transition: opacity .5s; }
-
-            .left-img{
-              background-image: url(${leftImage.url});
-              width: ${leftImage.width}px;
-              float: left;
-            }
-            .right-img{
-              width: ${rightImage.width}px;
-              float: right;
-            }
-            .imag{
               height: ${imageHeight}px;
               background-repeat: no-repeat;
-              background-size: contain;
-            }
-            .inside-text{
-              position: absolute;
-              top: 80px;
-              right: 0px;
-              width: 253px;
-              font-size: 26px;
-              font-style: italic;
+              background-size: 275px;
+              background-position-x: 48%;
+              background-position-y: 50%;
             }
           `}
         </style>
         <div className="grad-container layout-fixed">
           <ul className="row" id="menu-bar">
             <li className="nav-item"><a href="/">HOME</a> </li>
-            <li className="nav-item about"   ><a href="/list">PRODUCT LIST</a></li>
-            <li className="nav-item services" onMouseEnter={this.openServices} onMouseLeave={this.closeServices}><a>DETAILS </a>{servicesMenu}</li>
+            <li className="nav-item about" ><a href="/list">PRODUCT LIST</a></li>
+            <li className="nav-item services" onMouseEnter={this.openServices} onMouseLeave={this.closeServices}><a>DETAILS </a>{dropdownMenu}</li>
           </ul>
           <div className="row" id="main-img-bar" style={{opacity: this.state.dim}}>
             {imagePanel}

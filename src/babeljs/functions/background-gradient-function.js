@@ -1,4 +1,3 @@
-var app = require('../app.js');
 
 var grad = function(color1, color2, type){
   type = type || 'linear';
