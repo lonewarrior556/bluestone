@@ -41,11 +41,12 @@ module.exports = React.createClass({
   render: function() {
 
     function urlify(url){
-      if(url.substring(0,4).toLowerCase !== 'http'){
+      if(url.substring(0,4).toLowerCase() !== 'http'){
         return 'http://' + url
       }
       return url
     }
+
     let fields = [];
     let activeItem = this.state.item;
     for(let key in activeItem){
@@ -77,7 +78,7 @@ module.exports = React.createClass({
     }
 
     return(
-      <section id="services-page" className="main-tab" style={{opacity: this.state.opacity}}>
+      <section key={key} id="services-page" className="main-tab" style={{opacity: this.state.opacity}}>
         <div className="ln-white-dark-light"></div>
         <div className="layout-fixed">
           <form style={{width:'500px'}}>

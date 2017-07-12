@@ -35558,23 +35558,24 @@ module.exports = React.createClass({
   render: function render() {
 
     function urlify(url) {
-      if (url.substring(0, 4).toLowerCase !== 'http') {
+      if (url.substring(0, 4).toLowerCase() !== 'http') {
         return 'http://' + url;
       }
       return url;
     }
+
     var fields = [];
     var activeItem = this.state.item;
-    for (var key in activeItem) {
+    for (var _key in activeItem) {
       fields.push(React.createElement(
         'label',
-        { key: key },
-        key
+        { key: _key },
+        _key
       ));
 
-      if (key === "images") {
-        for (var i = 0; i < activeItem[key].length; i++) {
-          var item = activeItem[key][i];
+      if (_key === "images") {
+        for (var i = 0; i < activeItem[_key].length; i++) {
+          var item = activeItem[_key][i];
           if (this.state.disabled) {
             fields.push(React.createElement(
               'a',
@@ -35588,7 +35589,7 @@ module.exports = React.createClass({
           fields.push(React.createElement('hr', { key: i }));
         }
       } else {
-        fields.push(React.createElement('input', { key: 'i' + key, type: 'text', value: this.state.item[key], onChange: this.updateTemp.bind(this, activeItem, key) }));
+        fields.push(React.createElement('input', { key: 'i' + _key, type: 'text', value: this.state.item[_key], onChange: this.updateTemp.bind(this, activeItem, _key) }));
       }
     }
     var buttons = [];
@@ -35613,7 +35614,7 @@ module.exports = React.createClass({
 
     return React.createElement(
       'section',
-      { id: 'services-page', className: 'main-tab', style: { opacity: this.state.opacity } },
+      { key: key, id: 'services-page', className: 'main-tab', style: { opacity: this.state.opacity } },
       React.createElement('div', { className: 'ln-white-dark-light' }),
       React.createElement(
         'div',
