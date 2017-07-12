@@ -11,7 +11,7 @@ module.exports = React.createClass({
     return {state: 'menu-closed'};
   },
   componentDidMount: function() {
-    var that = this;
+    let that = this;
     $.ajax({ url: '/data/data.json' }).then(function(data){
       that.items =   this.items = JSON.parse(localStorage["data"] || 'null') || data;
       that.timeOut = setTimeout(that.setState.bind(that, { state: 'menu-opened' } ), 50)

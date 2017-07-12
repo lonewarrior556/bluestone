@@ -1,5 +1,5 @@
 
-var grad = function(color1, color2, type){
+let grad = function(color1, color2, type){
   type = type || 'linear';
   return(`background: ${color1};
           background: -webkit-${type}-gradient(${color1}, ${color2});

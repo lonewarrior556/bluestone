@@ -17,7 +17,7 @@ module.exports = React.createClass({
     //update load from save or defaults
     let items = JSON.parse(localStorage["data"] || 'null') || this.props.baseObjects;
     let list = []
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       let item = items[i];
       list.push(<li key={i} style={{padding:'10px', borderBottom:'1px solid black'}}>
                   <a className="product-link" href={`/details/${i}`}>{item.name}</a>

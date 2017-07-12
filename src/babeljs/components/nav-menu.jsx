@@ -1,7 +1,7 @@
 const MenuDropdown = require('./menu-dropdown.jsx');
 const backgroundGradient = require('../functions/background-gradient-function.js');
 
-var NavMenu = React.createClass({
+module.exports = React.createClass({
   getInitialState: function() {
     return { page : (window.location.pathname.slice(1)||'home'), dim: 1 }
   },
@@ -23,8 +23,8 @@ var NavMenu = React.createClass({
   },
 
   render: function() {
-    var imagePanel, height, imageHeight, image;
-    var dropdownMenu = this.state.details ? <MenuDropdown top="30px" right="0" /> : null;
+    let imagePanel, height, imageHeight, image;
+    let dropdownMenu = this.state.details ? <MenuDropdown top="30px" right="0" /> : null;
 
     if(this.state.page === 'home'){
        height = 290;
@@ -91,7 +91,3 @@ var NavMenu = React.createClass({
     );
   }
 });
-
-
-
-module.exports = NavMenu;

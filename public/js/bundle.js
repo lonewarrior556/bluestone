@@ -35359,8 +35359,8 @@ module.exports = React.createClass({
 var MenuDropdown = require('./menu-dropdown.jsx');
 var backgroundGradient = require('../functions/background-gradient-function.js');
 
-var NavMenu = React.createClass({
-  displayName: 'NavMenu',
+module.exports = React.createClass({
+  displayName: 'exports',
 
   getInitialState: function getInitialState() {
     return { page: window.location.pathname.slice(1) || 'home', dim: 1 };
@@ -35383,7 +35383,10 @@ var NavMenu = React.createClass({
   },
 
   render: function render() {
-    var imagePanel, height, imageHeight, image;
+    var imagePanel = void 0,
+        height = void 0,
+        imageHeight = void 0,
+        image = void 0;
     var dropdownMenu = this.state.details ? React.createElement(MenuDropdown, { top: '30px', right: '0' }) : null;
 
     if (this.state.page === 'home') {
@@ -35470,8 +35473,6 @@ var NavMenu = React.createClass({
     );
   }
 });
-
-module.exports = NavMenu;
 
 }).call(this,require("react"))
 },{"../functions/background-gradient-function.js":193,"./menu-dropdown.jsx":191,"react":186}],193:[function(require,module,exports){

@@ -1,5 +1,5 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
 app.set('view engine', 'jade');
 app.set('views', './views');
@@ -9,7 +9,7 @@ app.locals.pretty = true;
 app.use(express.static(__dirname+'/views'));
 app.use(express.static(__dirname+'/public'));
 
-var main = function(req, res){
+let main = function(req, res){
   res.render('main');
 }
 

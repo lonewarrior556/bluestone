@@ -1,5 +1,5 @@
 const BBrouter = require('./backbone/router.jsx');
-var app = require('./app.js');
+const app = require('./app.js');
 
 
 $( document ).ready( function(){
