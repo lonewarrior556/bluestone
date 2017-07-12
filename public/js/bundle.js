@@ -35557,6 +35557,12 @@ module.exports = React.createClass({
   },
   render: function render() {
 
+    function urlify(url) {
+      if (url.substring(0, 4).toLowerCase !== 'http') {
+        return 'http://' + url;
+      }
+      return url;
+    }
     var fields = [];
     var activeItem = this.state.item;
     for (var key in activeItem) {
@@ -35569,9 +35575,17 @@ module.exports = React.createClass({
       if (key === "images") {
         for (var i = 0; i < activeItem[key].length; i++) {
           var item = activeItem[key][i];
-          fields.push(React.createElement('input', { key: 'a' + i, type: 'text', placeholder: 'name', value: item['name'], onChange: this.updateTemp.bind(this, item, 'name') }));
-          fields.push(React.createElement('input', { key: 'b' + i, type: 'text', placeholder: 'url', value: item['url'], onChange: this.updateTemp.bind(this, item, 'url') }));
-          fields.push(React.createElement('hr', { key: 'c' + i }));
+          if (this.state.disabled) {
+            fields.push(React.createElement(
+              'a',
+              { key: i, href: urlify(item.url), target: '_blank' },
+              item.name
+            ));
+          } else {
+            fields.push(React.createElement('input', { key: 'a' + i, type: 'text', placeholder: 'name', value: item['name'], onChange: this.updateTemp.bind(this, item, 'name') }));
+            fields.push(React.createElement('input', { key: 'b' + i, type: 'text', placeholder: 'url', value: item['url'], onChange: this.updateTemp.bind(this, item, 'url') }));
+          }
+          fields.push(React.createElement('hr', { key: i }));
         }
       } else {
         fields.push(React.createElement('input', { key: 'i' + key, type: 'text', value: this.state.item[key], onChange: this.updateTemp.bind(this, activeItem, key) }));

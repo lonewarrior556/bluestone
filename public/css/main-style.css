@@ -53,3 +53,9 @@ fieldset{
 fieldset:disabled{
   color:red;
 }
+fieldset a {
+  color: #0000EE;
+}
+fieldset a:hover {
+  text-decoration: underline;
+}

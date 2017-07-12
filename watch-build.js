@@ -4,7 +4,7 @@ var watchify = require('watchify');
 var globalShim = require('browserify-global-shim');
 
 var b = browserify({
-  entries: ['./src/babeljs/main.jsx'],
+  entries: ['./src/babeljs/main.js'],
   cache: {},
   packageCache: {},
   plugin: [watchify],

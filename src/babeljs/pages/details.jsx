@@ -18,7 +18,7 @@ module.exports = React.createClass({
   componentDidMount: function() {
     //transition effects
     setTimeout(this.setState.bind(this, {opacity: 1}), 500)
-  },  
+  },
   componentWillReceiveProps: function(props){
     this.setState({disabled:true,index: props.index, item: this.items[props.index]})
   },
@@ -40,6 +40,12 @@ module.exports = React.createClass({
   },
   render: function() {
 
+    function urlify(url){
+      if(url.substring(0,4).toLowerCase !== 'http'){
+        return 'http://' + url
+      }
+      return url
+    }
     let fields = [];
     let activeItem = this.state.item;
     for(let key in activeItem){
@@ -48,9 +54,13 @@ module.exports = React.createClass({
       if(key==="images"){
         for (let i = 0; i < activeItem[key].length; i++) {
           let item = activeItem[key][i]
-          fields.push(<input key={'a'+i} type="text" placeholder="name" value={item['name']} onChange={this.updateTemp.bind(this, item, 'name')}/>)
-          fields.push(<input key={'b'+i} type="text" placeholder="url" value={item['url']} onChange={this.updateTemp.bind(this, item, 'url')}/>)
-          fields.push(<hr key={'c'+i}/>)
+          if(this.state.disabled){
+            fields.push(<a key={i} href={urlify(item.url)} target="_blank">{item.name}</a>)
+          }else{
+            fields.push(<input key={'a'+i} type="text" placeholder="name" value={item['name']} onChange={this.updateTemp.bind(this, item, 'name')}/>)
+            fields.push(<input key={'b'+i} type="text" placeholder="url" value={item['url']} onChange={this.updateTemp.bind(this, item, 'url')}/>)
+          }
+          fields.push(<hr key={i}/>)
         }
       }else{
         fields.push(<input key={'i'+key} type="text" value={this.state.item[key]} onChange={this.updateTemp.bind(this, activeItem, key)}/>)
