@@ -56,12 +56,11 @@ module.exports = React.createClass({
         for (let i = 0; i < activeItem[key].length; i++) {
           let item = activeItem[key][i]
           if(this.state.disabled){
-            fields.push(<a key={i} href={urlify(item.url)} target="_blank">{item.name}</a>)
+            fields.push(<a key={'a'+i} href={urlify(item.url)} target="_blank">{item.name}</a>)
           }else{
             fields.push(<input key={'a'+i} type="text" placeholder="name" value={item['name']} onChange={this.updateTemp.bind(this, item, 'name')}/>)
             fields.push(<input key={'b'+i} type="text" placeholder="url" value={item['url']} onChange={this.updateTemp.bind(this, item, 'url')}/>)
           }
-          fields.push(<hr key={i}/>)
         }
       }else{
         fields.push(<input key={'i'+key} type="text" value={this.state.item[key]} onChange={this.updateTemp.bind(this, activeItem, key)}/>)
@@ -78,10 +77,10 @@ module.exports = React.createClass({
     }
 
     return(
-      <section key={key} id="services-page" className="main-tab" style={{opacity: this.state.opacity}}>
+      <section id="services-page" className="main-tab" style={{opacity: this.state.opacity}}>
         <div className="ln-white-dark-light"></div>
         <div className="layout-fixed">
-          <form style={{width:'500px'}}>
+          <form style={{width:'600px'}}>
             <fieldset disabled={this.state.disabled}>
               {fields}
             </fieldset>

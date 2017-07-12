@@ -35566,30 +35566,29 @@ module.exports = React.createClass({
 
     var fields = [];
     var activeItem = this.state.item;
-    for (var _key in activeItem) {
+    for (var key in activeItem) {
       fields.push(React.createElement(
         'label',
-        { key: _key },
-        _key
+        { key: key },
+        key
       ));
 
-      if (_key === "images") {
-        for (var i = 0; i < activeItem[_key].length; i++) {
-          var item = activeItem[_key][i];
+      if (key === "images") {
+        for (var i = 0; i < activeItem[key].length; i++) {
+          var item = activeItem[key][i];
           if (this.state.disabled) {
             fields.push(React.createElement(
               'a',
-              { key: i, href: urlify(item.url), target: '_blank' },
+              { key: 'a' + i, href: urlify(item.url), target: '_blank' },
               item.name
             ));
           } else {
             fields.push(React.createElement('input', { key: 'a' + i, type: 'text', placeholder: 'name', value: item['name'], onChange: this.updateTemp.bind(this, item, 'name') }));
             fields.push(React.createElement('input', { key: 'b' + i, type: 'text', placeholder: 'url', value: item['url'], onChange: this.updateTemp.bind(this, item, 'url') }));
           }
-          fields.push(React.createElement('hr', { key: i }));
         }
       } else {
-        fields.push(React.createElement('input', { key: 'i' + _key, type: 'text', value: this.state.item[_key], onChange: this.updateTemp.bind(this, activeItem, _key) }));
+        fields.push(React.createElement('input', { key: 'i' + key, type: 'text', value: this.state.item[key], onChange: this.updateTemp.bind(this, activeItem, key) }));
       }
     }
     var buttons = [];
@@ -35614,14 +35613,14 @@ module.exports = React.createClass({
 
     return React.createElement(
       'section',
-      { key: key, id: 'services-page', className: 'main-tab', style: { opacity: this.state.opacity } },
+      { id: 'services-page', className: 'main-tab', style: { opacity: this.state.opacity } },
       React.createElement('div', { className: 'ln-white-dark-light' }),
       React.createElement(
         'div',
         { className: 'layout-fixed' },
         React.createElement(
           'form',
-          { style: { width: '500px' } },
+          { style: { width: '600px' } },
           React.createElement(
             'fieldset',
             { disabled: this.state.disabled },
